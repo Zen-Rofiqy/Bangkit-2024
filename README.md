@@ -1,4 +1,4 @@
-# Bangkit-2024
+# Bangkit Academy 2024
   
 # Refleksi diri
 ### Sasaran Pengembangan Skill
