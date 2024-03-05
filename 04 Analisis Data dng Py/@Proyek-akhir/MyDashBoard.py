@@ -13,7 +13,6 @@ from sklearn.decomposition import PCA
 from scipy import stats
 import sys
 import io
-from IPython.display import display, Image
 from babel.numbers import format_currency
 import matplotlib.dates as mdates
 from PIL import Image
