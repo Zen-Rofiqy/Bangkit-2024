@@ -18,6 +18,17 @@ import matplotlib.dates as mdates
 from PIL import Image
 sns.set(style='dark')
 
+st.set_page_config(
+    page_title="Bikeshare",
+    page_icon="🚲",
+)
+
+st.title("Main Page")
+st.sidebar.success("Select a page above.")
+
+st.markdown("<h2 style='text-align: center; color: white;'>Analisis <i>Pengaruh</i> Kondisi <i>Lingkungan</i> dan <i>Musim</i> Terhadap Tren <i>Penyewaan Sepeda</i>: Studi Kasus Sistem Capital Bikeshare di Washington D.C.</h2>", unsafe_allow_html=True)
+st.image('https://cdn.discordapp.com/attachments/763214382020558858/1214663023310934067/fileKC_Bikes-1024x683.jpg?ex=65f9ee18&is=65e77918&hm=ab8a90a2602c0d6ce28e6c774f649f4f74b087497aed66ea00d2ea2f7824daf3&') 
+
 # DATA
 day_df = pd.read_csv("https://raw.githubusercontent.com/Zen-Rofiqy/Bangkit-2024/main/04%20Analisis%20Data%20dng%20Py/%40Proyek-akhir/Bike-sharing-dataset/day.csv")
 day_df.head(n=10)
@@ -64,7 +75,7 @@ try:
     if page == 'Data':
         # METADATA
         st.write("## Metadata")
-        st.markdown("> Latarbelakang")
+        st.markdown("> **Latarbelakang**")
         st.write(
             """
             **_Bike sharing_** atau Sistem berbagi sepeda adalah generasi baru dari **penyewaan sepeda tradisional** di mana seluruh proses mulai dari **keanggotaan**, **penyewaan**, dan **pengembalian** sepeda menjadi **otomatis**. Melalui sistem ini, pengguna dapat dengan mudah menyewa sepeda dari posisi tertentu dan mengembalikannya di posisi lain. Saat ini, terdapat **lebih dari 500 program** berbagi sepeda di seluruh dunia yang terdiri dari **lebih dari 500k sepeda**. Saat ini, terdapat minat yang besar terhadap sistem ini karena peran penting mereka dalam masalah lalu lintas, lingkungan dan kesehatan. 
@@ -72,13 +83,23 @@ try:
             Terlepas dari aplikasi dunia nyata yang menarik dari sistem berbagi sepeda, **karakteristik data** yang dihasilkan oleh sistem ini membuatnya menarik untuk penelitian. Berbeda dengan layanan transportasi lain seperti bus atau kereta bawah tanah, **durasi perjalanan**, **posisi keberangkatan** dan **kedatangan secara eksplisit** dicatat dalam sistem ini. Fitur ini mengubah sistem berbagi sepeda menjadi **jaringan sensor virtual** yang dapat digunakan untuk merasakan mobilitas di kota. Dengan demikian, diharapkan sebagian besar kejadian penting di kota dapat dideteksi melalui pemantauan data ini.
             """
         )
-        st.markdown("> Data set")
+        st.markdown("> **Data set**")
         st.write(
             """
             Proses penyewaan sepeda bersama sangat **berkorelasi** dengan **kondisi lingkungan** dan **musim**. Misalnya, **kondisi cuaca**, **curah hujan**, **hari dalam seminggu**, **musim**, **jam dalam sehari**, dan lain-lain dapat mempengaruhi perilaku penyewaan. Kumpulan data inti terkait dengan catatan historis selama **dua tahun** yang berkaitan dengan tahun **2011** dan **2012** dari sistem Capital Bikeshare, Washington D.C., Amerika Serikat yang tersedia untuk umum di http://capitalbikeshare.com/system-data. Kami mengumpulkan data tersebut dalam dua basis data **per jam** dan **per hari**, kemudian mengekstrak dan menambahkan **informasi cuaca** dan **musim** yang sesuai. Informasi cuaca diambil dari http://www.freemeteo.com.
             """
         )
-        st.markdown("> Karakteristik Dataset")
+        st.markdown("> **Tugas terkait**")
+        st.write(
+            """
+            * **Regresi**:  
+                **Prediksi jumlah penyewaan sepeda** per jam atau per hari **berdasarkan pengaturan lingkungan dan musim**.
+                
+            * **Deteksi Peristiwa dan Anomali**:  
+                **Jumlah sepeda yang disewa** juga **berkorelasi** dengan beberapa **peristiwa di kota** yang dapat dengan mudah ditelusuri melalui mesin pencari.	Sebagai contoh, kueri seperti "2012-10-30 washington d.c." di Google mengembalikan hasil yang terkait dengan **Badai Sandy**. Beberapa peristiwa penting diidentifikasi dalam [1]. Oleh karena itu, data tersebut dapat digunakan untuk **validasi algoritma** **pendeteksi anomali atau kejadian**.
+            """
+        )
+        st.markdown("> **Karakteristik Dataset**")
         st.write(
             """
             Baik hour.csv dan day.csv memiliki bidang berikut, kecuali hr yang tidak tersedia di day.csv
@@ -105,7 +126,7 @@ try:
             * `cnt`        : jumlah total sepeda yang disewa termasuk yang kasual dan terdaftar
             """
         )
-        st.markdown("<h1 style='text-align: center; color: white;'>Tabel Data</h1>", unsafe_allow_html=True)
+        st.markdown("<h2 style='text-align: center; color: white;'>Tabel Data</h2>", unsafe_allow_html=True)
         st.dataframe(Hari)
 
     # Page 2
@@ -184,10 +205,10 @@ try:
         # Menampilkan plot
         c1, c2, c3 = st.columns((1,1,1))
         c1.markdown("**Sebaran Musim**")
-        c1.image(Image.open(io.BytesIO(c_season.getvalue())), caption='Musim Gugur merupakan musim terbanyak.')
+        c1.image(Image.open(io.BytesIO(c_season.getvalue())), caption='Dalam periode 2 tahun yang diamati, Musim Gugur mencatat jumlah hari terbanyak dibandingkan dengan musim lainnya, dengan total mencapai 188 hari.')
 
         c2.markdown("**Sebaran Hari Libur**")
-        c2.image(Image.open(io.BytesIO(c_holiday.getvalue())), caption='Hari Libur dalam 2 tahun sangatlah.')
+        c2.image(Image.open(io.BytesIO(c_holiday.getvalue())), caption='Hari Libur dalam 2 tahun sangatlah sedikit.')
 
         c3.markdown("**Sebaran Cuaca**")
         c3.image(Image.open(io.BytesIO(c_weathersit.getvalue())), caption='Dalam 2 tahun cuaca sering berkabut.')
