@@ -261,25 +261,25 @@ try:
         c7, c8, c9 = st.columns((1,1,1))
 
         c4.markdown("**Sebaran Temperatur**")
-        c4.image(Image.open(io.BytesIO(c_temp.getvalue())), caption='Caption')
+        c4.image(Image.open(io.BytesIO(c_temp.getvalue())), caption='Menyebar bimodal simetris.')
 
         c5.markdown("**Sebaran Suhu Perasaan**")
-        c5.image(Image.open(io.BytesIO(c_atemp.getvalue())), caption='Caption')
+        c5.image(Image.open(io.BytesIO(c_atemp.getvalue())), caption='Menyebar bimodal asimetris.')
 
         c6.markdown("**Sebaran Kelembapan**")
-        c6.image(Image.open(io.BytesIO(c_hum.getvalue())), caption='Caption')
+        c6.image(Image.open(io.BytesIO(c_hum.getvalue())), caption='Cenderung simetris jika tanpa outlier di sebalah kiri (menjulur ke kiri).')
         
         c7.markdown("**Sebaran Kecepatan Angin**")
-        c7.image(Image.open(io.BytesIO(c_windspeed.getvalue())), caption='Caption')
+        c7.image(Image.open(io.BytesIO(c_windspeed.getvalue())), caption='Menjulur ke kanan.')
 
         c8.markdown("**Sebaran Pengguna Biasa**")
-        c8.image(Image.open(io.BytesIO(c_casual.getvalue())), caption='Caption')
+        c8.image(Image.open(io.BytesIO(c_casual.getvalue())), caption='Menjulur ke kanan.')
 
         c9.markdown("**Sebaran Pengguna Terdaftar**")
-        c9.image(Image.open(io.BytesIO(c_registered.getvalue())), caption='Caption')
+        c9.image(Image.open(io.BytesIO(c_registered.getvalue())), caption='Menyebar Simetris, hampir menyebar normal.')
            
         st.markdown("**Sebaran Total Sepeda yang disewakan**")
-        st.image(Image.open(io.BytesIO(c_cnt.getvalue())), caption='Caption')
+        st.image(Image.open(io.BytesIO(c_cnt.getvalue())), caption='Menyebar Simetris, hampir menyebar normal')
             
         # Time Series
         st.write("\n\n")
@@ -302,8 +302,8 @@ try:
         st.pyplot(plt1)
 
         # Interpretasi
-        if st.button("Interpretasi"):   
-            st.write("Bentuk sebaran dari pola penyewa harian menunjukkan bentuk yang cenderung simetris berarti nilai dari mean, modus, dan mediannya cenderung sama")
+        if st.button("Interpretasi 1"):   
+            st.write("Data deret waktunya sangat berfluktuatif. Namun walau begitu memiliki tren naik.")
         
 
         # Matriks Korelasi 
@@ -323,8 +323,8 @@ try:
         st.pyplot(plt2)
 
         # Interpretasi
-        if st.button("Interpretasi"):   
-            st.write("Bentuk sebaran dari pola penyewa harian menunjukkan bentuk yang cenderung simetris berarti nilai dari mean, modus, dan mediannya cenderung sama")
+        if st.button("Interpretasi 2"):   
+            st.write("Diasumsikan bahwa peubah `cnt` merupakah peubah respon. Sehingga yang kita perlu lihat hanyalah baris terakhir saja. Terlihat bahwa korelasi terkuat dimiliki oleh peubah `registered` yakni merupakan korelasi positif. Dan korelasi terlemah yakni dimiliki oleh peubah `hum` dengan nilai negatif.")
 
 except Exception as e:
     st.error(f"ERROR: Masukkan tanggal dengan benar{e}")
