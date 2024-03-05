@@ -16,6 +16,7 @@ from babel.numbers import format_currency
 import matplotlib.dates as mdates
 from PIL import Image
 
+# Setting
 st.set_page_config(
     page_title="Bikeshare",
     page_icon="🚲",
@@ -47,7 +48,8 @@ cor = data[['cnt','temp','atemp', 'hum', 'windspeed', 'casual', 'registered']]
 
 # Page3
 # EKSPLORASI
-st.markdown("<h1 style='text-align: center; color: white;'>Eksplorasi Data</h1>", unsafe_allow_html=True)
+st.markdown("<h1 style='text-align: center; color: white;'>📊 Eksplorasi Data</h1>", unsafe_allow_html=True)
+st.markdown("---")
 st.subheader('Jumlah Total')
 col1, col2, col3 = st.columns(3)
 with col1:
@@ -56,6 +58,7 @@ with col2:
     st.metric("  Total Membered", value=Date['registered'].sum())
 with col3:
     st.metric("  Total Regular", value=Date['casual'].sum())
+st.markdown("---")
 
 # Sebaran Disktrit
 st.write("\n\n")
@@ -107,6 +110,7 @@ c2.image(Image.open(io.BytesIO(c_holiday.getvalue())), caption='Hari Libur dalam
 c3.markdown("**Sebaran Cuaca**")
 c3.image(Image.open(io.BytesIO(c_weathersit.getvalue())), caption='Dalam 2 tahun cuaca sering berkabut.')
 # ------
+st.markdown("---")
 
 # Sebaran Kontinu
 st.write("\n\n")
@@ -194,7 +198,9 @@ c9.image(Image.open(io.BytesIO(c_registered.getvalue())), caption='Menyebar Sime
     
 st.markdown("**Sebaran Total Sepeda yang disewakan**")
 st.image(Image.open(io.BytesIO(c_cnt.getvalue())), caption='Menyebar Simetris, hampir menyebar normal')
-    
+
+st.markdown("---")
+
 # Time Series
 st.write("\n\n")
 st.subheader('Data Deret Waktu')

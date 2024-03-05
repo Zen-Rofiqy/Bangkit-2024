@@ -22,6 +22,9 @@ st.set_page_config(
     page_icon="🚲",
 )
 
+st.markdown("<h1 style='text-align: center; color: white;'>🛠️ Data Wrangling</h1>", unsafe_allow_html=True)
+st.markdown("---")
+
 data = st.session_state["data"]
 
 min_date = data["dteday"].min()
@@ -56,6 +59,8 @@ with col2 :
     st.markdown(""" Data NA""")
     st.dataframe(data.isnull().sum())
 st.write("Jumlah data duplikat: " + str(data.duplicated().sum()))
+st.markdown("---")
+
 st. subheader("Cleaning Data")
 st.markdown(""" Data setelah di cleaning""")
 st.dataframe(data)
