@@ -15,6 +15,7 @@ import io
 from babel.numbers import format_currency
 import matplotlib.dates as mdates
 from PIL import Image
+import base64
 
 # Setting
 st.set_page_config(
@@ -36,7 +37,7 @@ def count(dates) :
 st.sidebar.success("Select a page above.")
 with st.sidebar:       
     start, end = st.date_input(
-        label='Waktu',
+        label='Tanggal',
         min_value=min_date,
         max_value=max_date,
         value=[min_date, max_date]
@@ -100,16 +101,24 @@ c_holiday = plot_disk(day_df, 'holiday', names=['Hari Kerja', 'Hari Libur'])
 c_weathersit = plot_disk(day_df, 'weathersit', names=['Cerah', 'Berkabut', 'Salju Ringan'])
 
 # Menampilkan plot
+# Membuat tiga kolom
 c1, c2, c3 = st.columns((1,1,1))
-c1.markdown("**Sebaran Musim**")
-c1.image(Image.open(io.BytesIO(c_season.getvalue())), caption='Dalam periode 2 tahun yang diamati, Musim Gugur mencatat jumlah hari terbanyak dibandingkan dengan musim lainnya, dengan total mencapai 188 hari.')
 
-c2.markdown("**Sebaran Hari Libur**")
-c2.image(Image.open(io.BytesIO(c_holiday.getvalue())), caption='Hari Libur dalam 2 tahun sangatlah sedikit.')
+# Mendefinisikan fungsi untuk menampilkan gambar dengan judul dan caption opsional
+def img_capt(column, title, image_bytes, button_label, default_caption):
+    # Mengubah objek BytesIO menjadi base64
+    encoded_image = base64.b64encode(image_bytes.getvalue()).decode('utf-8')
+    
+    column.markdown(f"**{title}**")
+    column.image(f"data:image/png;base64,{encoded_image}")
+    if column.button(button_label):
+        column.write(default_caption)
 
-c3.markdown("**Sebaran Cuaca**")
-c3.image(Image.open(io.BytesIO(c_weathersit.getvalue())), caption='Dalam 2 tahun cuaca sering berkabut.')
-# ------
+# Menampilkan gambar dengan judul dan caption opsional di setiap kolom
+img_capt(c1, "Sebaran Musim", c_season, "Caption1", 'Dalam periode 2 tahun yang diamati, Musim Gugur mencatat jumlah hari terbanyak dibandingkan dengan musim lainnya, dengan total mencapai 188 hari.')
+img_capt(c2, "Sebaran Hari Libur", c_holiday, "Caption2", 'Hari Libur dalam 2 tahun sangatlah sedikit.')
+img_capt(c3, "Sebaran Cuaca", c_weathersit, "Caption3", 'Dalam 2 tahun cuaca sering berkabut.')
+
 st.markdown("---")
 
 # Sebaran Kontinu
@@ -175,40 +184,26 @@ c_registered = plot_kon(day_df, 'registered')
 c_cnt = plot_kon(day_df, 'cnt')
 
 # Menampilkan plot
+# Membuat tiga kolom
 c4, c5, c6 = st.columns((1,1,1))
 c7, c8, c9 = st.columns((1,1,1))
 
-c4.markdown("**Sebaran Temperatur**")
-c4.image(Image.open(io.BytesIO(c_temp.getvalue())), caption='Menyebar bimodal simetris.')
-
-c5.markdown("**Sebaran Suhu Perasaan**")
-c5.image(Image.open(io.BytesIO(c_atemp.getvalue())), caption='Menyebar bimodal asimetris.')
-
-c6.markdown("**Sebaran Kelembapan**")
-c6.image(Image.open(io.BytesIO(c_hum.getvalue())), caption='Cenderung simetris jika tanpa outlier di sebalah kiri (menjulur ke kiri).')
-
-c7.markdown("**Sebaran Kecepatan Angin**")
-c7.image(Image.open(io.BytesIO(c_windspeed.getvalue())), caption='Menjulur ke kanan.')
-
-c8.markdown("**Sebaran Pengguna Biasa**")
-c8.image(Image.open(io.BytesIO(c_casual.getvalue())), caption='Menjulur ke kanan.')
-
-c9.markdown("**Sebaran Pengguna Terdaftar**")
-c9.image(Image.open(io.BytesIO(c_registered.getvalue())), caption='Menyebar Simetris, hampir menyebar normal.')
+img_capt(c4, "Sebaran Musim", c_temp, "Caption4", 'Menyebar bimodal simetris.')
+img_capt(c5, "Sebaran Hari Libur", c_atemp, "Caption5", 'Menyebar bimodal asimetris.')
+img_capt(c6, "Sebaran Cuaca", c_hum, "Caption6", 'Cenderung simetris jika tanpa outlier di sebalah kiri (menjulur ke kiri).')
+img_capt(c7, "Sebaran Musim", c_windspeed, "Caption7", 'Menjulur ke kanan.')
+img_capt(c8, "Sebaran Musim", c_casual, "Caption8", 'Menjulur ke kanan.')
+img_capt(c9, "Sebaran Musim", c_registered, "Caption9", 'Menyebar Simetris, hampir menyebar normal.')
     
 st.markdown("**Sebaran Total Sepeda yang disewakan**")
-st.image(Image.open(io.BytesIO(c_cnt.getvalue())), caption='Menyebar Simetris, hampir menyebar normal')
+st.image(Image.open(io.BytesIO(c_cnt.getvalue())), 
+         caption='Menyebar Simetris, hampir menyebar normal')
 
 st.markdown("---")
 
 # Time Series
 st.write("\n\n")
 st.subheader('Data Deret Waktu')
-# Convert 'dteday' to datetime
-day_df['dteday'] = pd.to_datetime(day_df['dteday'])
-
-# Set 'dteday' as index
-day_df.set_index('dteday', inplace=True)
 
 # Plot the time series
 plt.figure(figsize=(25, 8))

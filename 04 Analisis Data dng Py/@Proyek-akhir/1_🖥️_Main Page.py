@@ -29,8 +29,8 @@ st.markdown("---")
 # DATA
 day_df = pd.read_csv("https://raw.githubusercontent.com/Zen-Rofiqy/Bangkit-2024/main/04%20Analisis%20Data%20dng%20Py/%40Proyek-akhir/Bike-sharing-dataset/day.csv")
 day_df.head(n=10)
-st.session_state["day_df"] = day_df
 
+st.session_state["day_df"] = day_df
 
 data = pd.DataFrame(day_df)
 data['season'] = data['season'].replace({1: 'M Semi', 2: 'M Panas', 3:"M Gugur", 4:"M Dingin"})
@@ -61,7 +61,7 @@ def count(dates) :
 st.sidebar.success("Select a page above.")
 with st.sidebar:       
     start, end = st.date_input(
-        label='Waktu',
+        label='Tanggal',
         min_value=min_date,
         max_value=max_date,
         value=[min_date, max_date]

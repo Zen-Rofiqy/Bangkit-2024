@@ -38,7 +38,7 @@ def count(dates) :
 st.sidebar.success("Select a page above.")
 with st.sidebar:       
     start, end = st.date_input(
-        label='Waktu',
+        label='Tanggal',
         min_value=min_date,
         max_value=max_date,
         value=[min_date, max_date]
