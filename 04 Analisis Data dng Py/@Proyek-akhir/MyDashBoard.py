@@ -185,13 +185,13 @@ try:
         # Menampilkan plot
         c1, c2, c3 = st.columns((1,1,1))
         c1.markdown("**Sebaran Musim**")
-        c1.image(Image.open(io.BytesIO(c_season.getvalue())), caption='Caption')
+        c1.image(Image.open(io.BytesIO(c_season.getvalue())), caption='Musim Gugur merupakan musim terbanyak.')
 
         c2.markdown("**Sebaran Hari Libur**")
-        c2.image(Image.open(io.BytesIO(c_holiday.getvalue())), caption='Caption')
+        c2.image(Image.open(io.BytesIO(c_holiday.getvalue())), caption='Hari Libur dalam 2 tahun sangatlah.')
 
         c3.markdown("**Sebaran Cuaca**")
-        c3.image(Image.open(io.BytesIO(c_weathersit.getvalue())), caption='Caption')
+        c3.image(Image.open(io.BytesIO(c_weathersit.getvalue())), caption='Dalam 2 tahun cuaca sering berkabut.')
         # ------
 
         # Sebaran Kontinu
@@ -259,7 +259,6 @@ try:
         # Menampilkan plot
         c4, c5, c6 = st.columns((1,1,1))
         c7, c8, c9 = st.columns((1,1,1))
-        c10 = st.columns((1))
 
         c4.markdown("**Sebaran Temperatur**")
         c4.image(Image.open(io.BytesIO(c_temp.getvalue())), caption='Caption')
@@ -279,10 +278,12 @@ try:
         c9.markdown("**Sebaran Pengguna Terdaftar**")
         c9.image(Image.open(io.BytesIO(c_registered.getvalue())), caption='Caption')
            
-        c10.markdown("**Sebaran Total Sepeda yang disewakan**")
-        c10.image(Image.open(io.BytesIO(c_cnt.getvalue())), caption='Caption')
+        st.markdown("**Sebaran Total Sepeda yang disewakan**")
+        st.image(Image.open(io.BytesIO(c_cnt.getvalue())), caption='Caption')
             
         # Time Series
+        st.write("\n\n")
+        st.subheader('Data Deret Waktu')
         # Convert 'dteday' to datetime
         day_df['dteday'] = pd.to_datetime(day_df['dteday'])
 
@@ -301,34 +302,29 @@ try:
         st.pyplot(plt1)
 
         # Interpretasi
-        st.caption(
-            """
-            # Interpretasi
-            Jadi gini..
-            """
-        )
+        if st.button("Interpretasi"):   
+            st.write("Bentuk sebaran dari pola penyewa harian menunjukkan bentuk yang cenderung simetris berarti nilai dari mean, modus, dan mediannya cenderung sama")
+        
 
         # Matriks Korelasi 
-        df = day_df.iloc[:, 2:]
+        st.write("\n\n")
+        st.subheader('Matriks Korelasi')
+        df = day_df.iloc[:, -7:]
 
         # Menghitung matriks korelasi
         corr = df.corr()
 
         # Plot heatmap
-        plt.figure(figsize=(12, 12))
-        sns.heatmap(corr, annot=True, cmap='viridis')
+        plt.figure(figsize=(14, 12))
+        sns.heatmap(corr, annot=True, fmt=".2f", cmap='viridis', linewidths=0.5, linecolor='black')
         plt.title('Matriks Korelasi')
         plt.show()
         plt2 = plt.gcf()
         st.pyplot(plt2)
 
         # Interpretasi
-        st.caption(
-            """
-            # Interpretasi
-            Jadi gini..
-            """
-        )
+        if st.button("Interpretasi"):   
+            st.write("Bentuk sebaran dari pola penyewa harian menunjukkan bentuk yang cenderung simetris berarti nilai dari mean, modus, dan mediannya cenderung sama")
 
 except Exception as e:
     st.error(f"ERROR: Masukkan tanggal dengan benar{e}")
