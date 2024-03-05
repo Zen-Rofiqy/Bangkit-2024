@@ -16,6 +16,7 @@ import io
 from IPython.display import display, Image
 from babel.numbers import format_currency
 import matplotlib.dates as mdates
+from PIL import Image
 sns.set(style='dark')
 
 # DATA
@@ -141,8 +142,10 @@ try:
             st.metric("  Total Membered", value=Date['registered'].sum())
         with col3:
             st.metric("  Total Regular", value=Date['casual'].sum())
-            
+        
         # Sebaran Disktrit
+        st.write("\n\n")
+        st.subheader('Sebaran Diskrit')
         def plot_disk(data_frame, column, names=None):
             # Mendapatkan kategori unik dan warna untuk plot
             max_value = data_frame[column].value_counts().idxmax()
@@ -174,42 +177,54 @@ try:
 
             return buffer
 
-            # Menyimpan plot 
-            # Disktrit
-            c_season = plot_disk(day_df, 'season', names=['Musim Semi', 'Musim Panas', 'Musim Gugur', 'Musim Dingin'])
-            c_holiday = plot_disk(day_df, 'holiday', names=['Hari Kerja', 'Hari Libur'])
-            c_weathersit = plot_disk(day_df, 'weathersit', names=['Cerah', 'Berkabut', 'Salju Ringan'])
-            # ------
+        # Menyimpan plot 
+        c_season = plot_disk(day_df, 'season', names=['Musim Semi', 'Musim Panas', 'Musim Gugur', 'Musim Dingin'])
+        c_holiday = plot_disk(day_df, 'holiday', names=['Hari Kerja', 'Hari Libur'])
+        c_weathersit = plot_disk(day_df, 'weathersit', names=['Cerah', 'Berkabut', 'Salju Ringan'])
+        
+        # Menampilkan plot
+        c1, c2, c3 = st.columns((1,1,1))
+        c1.markdown("**Sebaran Musim**")
+        c1.image(Image.open(io.BytesIO(c_season.getvalue())), caption='Caption')
 
-            # Sebaran Kontinu
-            def plot_kon(data_frame, column):
-                # Membuat subplots
-                fig, ax = plt.subplots(figsize=(8, 6))
+        c2.markdown("**Sebaran Hari Libur**")
+        c2.image(Image.open(io.BytesIO(c_holiday.getvalue())), caption='Caption')
 
-                # Create a list of colors for the boxplots based on the number of features you have
-                boxplots_colors = ['#5AC1A2']
+        c3.markdown("**Sebaran Cuaca**")
+        c3.image(Image.open(io.BytesIO(c_weathersit.getvalue())), caption='Caption')
+        # ------
 
-                # Boxplot data
-                bp = ax.boxplot(data_frame[column], patch_artist=True, vert=False)
+        # Sebaran Kontinu
+        st.write("\n\n")
+        st.subheader('Sebaran Kontinu')
+        def plot_kon(data_frame, column):
+            # Membuat subplots
+            fig, ax = plt.subplots(figsize=(8, 6))
 
-                # Change to the desired color and add transparency
-                for patch, color in zip(bp['boxes'], boxplots_colors):
-                    patch.set_facecolor(color)
-                    patch.set_alpha(0.4)
+            # Create a list of colors for the boxplots based on the number of features you have
+            boxplots_colors = ['#5AC1A2']
 
-                # Create a list of colors for the violin plots based on the number of features you have
-                violin_colors = ['#5AC1A2']
+            # Boxplot data
+            bp = ax.boxplot(data_frame[column], patch_artist=True, vert=False)
 
-                # Violinplot data
-                vp = ax.violinplot(data_frame[column], points=500, showmeans=False, showextrema=False, showmedians=False, vert=False)
+            # Change to the desired color and add transparency
+            for patch, color in zip(bp['boxes'], boxplots_colors):
+                patch.set_facecolor(color)
+                patch.set_alpha(0.4)
 
-                for idx, b in enumerate(vp['bodies']):
-                    # Get the center of the plot
-                    m = np.mean(b.get_paths()[0].vertices[:, 0])
-                    # Modify it so we only see the upper half of the violin plot
-                    b.get_paths()[0].vertices[:, 1] = np.clip(b.get_paths()[0].vertices[:, 1], idx+1, idx+2)
-                    # Change to the desired color
-                    b.set_color(violin_colors[idx])
+            # Create a list of colors for the violin plots based on the number of features you have
+            violin_colors = ['#5AC1A2']
+
+            # Violinplot data
+            vp = ax.violinplot(data_frame[column], points=500, showmeans=False, showextrema=False, showmedians=False, vert=False)
+
+            for idx, b in enumerate(vp['bodies']):
+                # Get the center of the plot
+                m = np.mean(b.get_paths()[0].vertices[:, 0])
+                # Modify it so we only see the upper half of the violin plot
+                b.get_paths()[0].vertices[:, 1] = np.clip(b.get_paths()[0].vertices[:, 1], idx+1, idx+2)
+                # Change to the desired color
+                b.set_color(violin_colors[idx])
 
                 # Create a list of colors for the scatter plots based on the number of features you have
                 scatter_colors = ['#5AC1A2']
@@ -232,63 +247,88 @@ try:
                 return buffer
 
 
-            # Kontinu
-            c_temp = plot_kon(day_df, 'temp')
-            c_atemp = plot_kon(day_df, 'atemp')
-            c_hum = plot_kon(day_df, 'hum')
-            c_windspeed = plot_kon(day_df, 'windspeed')
-            c_casual = plot_kon(day_df, 'casual')
-            c_registered = plot_kon(day_df, 'registered')
-            c_cnt = plot_kon(day_df, 'cnt')
+        # Menyimpan Plot
+        c_temp = plot_kon(day_df, 'temp')
+        c_atemp = plot_kon(day_df, 'atemp')
+        c_hum = plot_kon(day_df, 'hum')
+        c_windspeed = plot_kon(day_df, 'windspeed')
+        c_casual = plot_kon(day_df, 'casual')
+        c_registered = plot_kon(day_df, 'registered')
+        c_cnt = plot_kon(day_df, 'cnt')
 
+        # Menampilkan plot
+        c4, c5, c6 = st.columns((1,1,1))
+        c7, c8, c9 = st.columns((1,1,1))
+        c10 = st.columns((1))
 
-            # Time Series
-            # Convert 'dteday' to datetime
-            day_df['dteday'] = pd.to_datetime(day_df['dteday'])
+        c4.markdown("**Sebaran Temperatur**")
+        c4.image(Image.open(io.BytesIO(c_temp.getvalue())), caption='Caption')
 
-            # Set 'dteday' as index
-            day_df.set_index('dteday', inplace=True)
+        c5.markdown("**Sebaran Suhu Perasaan**")
+        c5.image(Image.open(io.BytesIO(c_atemp.getvalue())), caption='Caption')
 
-            # Plot the time series
-            plt.figure(figsize=(25, 8))
-            plt.plot(day_df.index, day_df['cnt'], marker='o', linestyle='-', color='#1380A1')
-            plt.title('Data Deret Waktu Dari Sistem berbagi Sepeda ')
-            plt.xlabel('Date')
-            plt.ylabel('Banyaknya sepeda')
-            plt.grid(True)
-            plt.show()
-            plt1 = plt.gcf()
-            st.pyplot(plt1)
+        c6.markdown("**Sebaran Kelembapan**")
+        c6.image(Image.open(io.BytesIO(c_hum.getvalue())), caption='Caption')
+        
+        c7.markdown("**Sebaran Kecepatan Angin**")
+        c7.image(Image.open(io.BytesIO(c_windspeed.getvalue())), caption='Caption')
 
+        c8.markdown("**Sebaran Pengguna Biasa**")
+        c8.image(Image.open(io.BytesIO(c_casual.getvalue())), caption='Caption')
+
+        c9.markdown("**Sebaran Pengguna Terdaftar**")
+        c9.image(Image.open(io.BytesIO(c_registered.getvalue())), caption='Caption')
+           
+        c10.markdown("**Sebaran Total Sepeda yang disewakan**")
+        c10.image(Image.open(io.BytesIO(c_cnt.getvalue())), caption='Caption')
+            
+        # Time Series
+        # Convert 'dteday' to datetime
+        day_df['dteday'] = pd.to_datetime(day_df['dteday'])
+
+        # Set 'dteday' as index
+        day_df.set_index('dteday', inplace=True)
+
+        # Plot the time series
+        plt.figure(figsize=(25, 8))
+        plt.plot(day_df.index, day_df['cnt'], marker='o', linestyle='-', color='#1380A1')
+        plt.title('Data Deret Waktu Dari Sistem berbagi Sepeda ')
+        plt.xlabel('Date')
+        plt.ylabel('Banyaknya sepeda')
+        plt.grid(True)
+        plt.show()
+        plt1 = plt.gcf()
+        st.pyplot(plt1)
+
+        # Interpretasi
+        st.caption(
+            """
             # Interpretasi
-            st.caption(
-                """
-                # Interpretasi
-                Jadi gini..
-                """
-            )
+            Jadi gini..
+            """
+        )
 
-            # Matriks Korelasi 
-            df = day_df.iloc[:, 2:]
+        # Matriks Korelasi 
+        df = day_df.iloc[:, 2:]
 
-            # Menghitung matriks korelasi
-            corr = df.corr()
+        # Menghitung matriks korelasi
+        corr = df.corr()
 
-            # Plot heatmap
-            plt.figure(figsize=(12, 12))
-            sns.heatmap(corr, annot=True, cmap='viridis')
-            plt.title('Matriks Korelasi')
-            plt.show()
-            plt2 = plt.gcf()
-            st.pyplot(plt2)
+        # Plot heatmap
+        plt.figure(figsize=(12, 12))
+        sns.heatmap(corr, annot=True, cmap='viridis')
+        plt.title('Matriks Korelasi')
+        plt.show()
+        plt2 = plt.gcf()
+        st.pyplot(plt2)
 
+        # Interpretasi
+        st.caption(
+            """
             # Interpretasi
-            st.caption(
-                """
-                # Interpretasi
-                Jadi gini..
-                """
-            )
+            Jadi gini..
+            """
+        )
 
 except Exception as e:
     st.error(f"ERROR: Masukkan tanggal dengan benar{e}")
