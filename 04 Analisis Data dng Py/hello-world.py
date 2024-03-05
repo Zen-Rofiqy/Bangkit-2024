@@ -137,7 +137,7 @@ genre = st.multiselect(
 # Slider
 values = st.slider(
     label='Select a range of values',
-    min_value=0, max_value=100, value=(0, 100))
+    min_value=0, max_value=100, value=(0, 100), key='slider_1')
 st.write('Values:', values)
 
 
@@ -151,7 +151,8 @@ with st.sidebar:
     
     values = st.slider(
         label='Select a range of values',
-        min_value=0, max_value=100, value=(0, 100)
+        min_value=0, max_value=100, value=(0, 100),
+        key='slider_2'
     )
     st.write('Values:', values)
 
@@ -235,3 +236,7 @@ with st.expander("See explanation"):
         """
     )
 
+# coba
+st.markdown("<h1 style='text-align: center; color: grey;'>Big headline</h1>", unsafe_allow_html=True)
+
+st.markdown("<h2 style='text-align: center; color: black;'>Smaller headline in black </h2>", unsafe_allow_html=True)
