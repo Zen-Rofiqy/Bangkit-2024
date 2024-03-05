@@ -17,7 +17,7 @@ t1,  = st.columns(1)
 t1.title("Courses Materials application on the *Bike Sharing Dataset*")
 
 # Data used
-df = pd.read_csv("dashboard/main_data.csv")
+df = pd.read_csv("main_data.csv")
 
 m1, m2, m3, m4, m5 = st.columns((1,1,1,1,1))
 m1.write('')
