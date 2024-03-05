@@ -14,6 +14,9 @@ from scipy import stats
 import sys
 import io
 from IPython.display import display, Image
+from babel.numbers import format_currency
+import matplotlib.dates as mdates
+sns.set(style='dark')
 
 # DATA
 day_df = pd.read_csv("https://raw.githubusercontent.com/Zen-Rofiqy/Bangkit-2024/main/04%20Analisis%20Data%20dng%20Py/%40Proyek-akhir/Bike-sharing-dataset/day.csv")
@@ -72,6 +75,36 @@ data['holiday'] = data['holiday'].replace({0: 'H Kerja', 1: 'H Libur'})
 data['weekday'] = data['weekday'].replace({0: 'Senin', 1: 'Selasa', 2:'Rabu', 3:'Kamis', 4:"Jum'at", 5:"Sabtu", 6:"Minggu"})
 data['weathersit'] = data['weathersit'].replace({1: 'Cerah', 2: 'Berkabut', 3:'Salju Ringan', 4:'Hujan Lebat'})
 st.table(data=data)
+
+# Setting
+try:
+    min_date = data["dteday"].min()
+    max_date = data["dteday"].max()
+
+    def count(dates) :
+        sumcount = dates['cnt'].sum()
+        return sumcount
+
+    # Sidebar
+    with st.sidebar:       
+        start, end = st.date_input(
+            label='Waktu',
+            min_value=min_date,
+            max_value=max_date,
+            value=[min_date, max_date]
+        )
+
+    Hari = data[(data["dteday"] >= str(start)) & (data["dteday"] <= str(end))]
+    Date = data[(data["dteday"] >= str(start)) & (data["dteday"] <= str(end))]
+    cor = data[['cnt','temp','atemp', 'hum', 'windspeed', 'casual', 'registered']]
+    
+    page = st.sidebar.selectbox('Menu Utama', ('Data', 'Data Wrangling', 'Eksplorasi'))
+
+    # Page 1
+    if page == 'Data':
+        st.markdown("<h1 style='text-align: center; color: white;'>Tabel Data</h1>", unsafe_allow_html=True)
+        st.dataframe(Hari)
+        
 
 
 # EKSPLORASI
