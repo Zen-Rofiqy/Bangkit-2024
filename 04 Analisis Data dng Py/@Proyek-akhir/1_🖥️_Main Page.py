@@ -139,9 +139,11 @@ st.write(
     """
     1. Bagaimana pola penggunaan sepeda berdasarkan musim dan kondisi cuaca di Washington D.C. selama dua tahun terakhir?
         - **Visualisasi Data:**  
-             Histogram/Density plot jumlah sepeda yang disewa per musim dengan variasi kondisi cuaca sebagai warna atau bentuk yang berbeda-beda. Grafik garis menunjukkan tren penggunaan sepeda selama dua tahun terakhir berdasarkan musim.
+             * Histogram/Density plot jumlah sepeda yang disewa per musim dengan variasi kondisi cuaca sebagai warna atau bentuk yang berbeda-beda. 
+             * Line Chart (Time Series) menunjukkan tren penggunaan sepeda selama dua tahun terakhir berdasarkan musim.
     2. Bagaimana pengaruh hari libur terhadap pola penggunaan sepeda di Washington D.C. selama dua tahun terakhir?
         - **Visualisasi Data:**  
-              Grafik batang menunjukkan perbandingan jumlah sepeda yang disewa pada hari libur dan hari kerja selama dua tahun terakhir. Grafik garis menunjukkan tren penggunaan sepeda selama dua tahun terakhir dengan penandaan hari libur yang berbeda.
+             * Bar Chart menunjukkan perbandingan jumlah sepeda yang disewa pada hari libur dan hari kerja selama dua tahun terakhir. 
+             * Line Chart menunjukkan tren penggunaan sepeda selama dua tahun terakhir dengan penandaan hari libur yang berbeda.
     """
 )
