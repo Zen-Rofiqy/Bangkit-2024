@@ -24,7 +24,7 @@ st.set_page_config(
 )
 
 data = st.session_state["data"]
-day_df = st.session_state["day_df"]
+dw_df = st.session_state["dw_df"]
 
 min_date = data["dteday"].min()
 max_date = data["dteday"].max()
@@ -96,9 +96,9 @@ def plot_disk(data_frame, column, names=None):
     return buffer
 
 # Menyimpan plot 
-c_season = plot_disk(day_df, 'season', names=['Musim Semi', 'Musim Panas', 'Musim Gugur', 'Musim Dingin'])
-c_holiday = plot_disk(day_df, 'holiday', names=['Hari Kerja', 'Hari Libur'])
-c_weathersit = plot_disk(day_df, 'weathersit', names=['Cerah', 'Berkabut', 'Salju Ringan'])
+c_season = plot_disk(dw_df, 'season', names=['Musim Semi', 'Musim Panas', 'Musim Gugur', 'Musim Dingin'])
+c_holiday = plot_disk(dw_df, 'holiday', names=['Hari Kerja', 'Hari Libur'])
+c_weathersit = plot_disk(dw_df, 'weathersit', names=['Cerah', 'Berkabut', 'Salju Ringan'])
 
 # Menampilkan plot
 # Membuat tiga kolom
@@ -175,13 +175,13 @@ def plot_kon(data_frame, column):
 
 
 # Menyimpan Plot
-c_temp = plot_kon(day_df, 'temp')
-c_atemp = plot_kon(day_df, 'atemp')
-c_hum = plot_kon(day_df, 'hum')
-c_windspeed = plot_kon(day_df, 'windspeed')
-c_casual = plot_kon(day_df, 'casual')
-c_registered = plot_kon(day_df, 'registered')
-c_cnt = plot_kon(day_df, 'cnt')
+c_temp = plot_kon(dw_df, 'temp')
+c_atemp = plot_kon(dw_df, 'atemp')
+c_hum = plot_kon(dw_df, 'hum')
+c_windspeed = plot_kon(dw_df, 'windspeed')
+c_casual = plot_kon(dw_df, 'casual')
+c_registered = plot_kon(dw_df, 'registered')
+c_cnt = plot_kon(dw_df, 'cnt')
 
 # Menampilkan plot
 # Membuat tiga kolom
@@ -222,13 +222,39 @@ with st.expander("Summary"):
 
 st.markdown("---")
 
+st.write("\n\n")
+st.subheader('Sebaran `cnt` per Musim tiap kondisi Cuaca')
+# Urutan hue berdasarkan jumlah cnt
+hue_order = dw_df.groupby('weathersit')['cnt'].sum().sort_values(ascending=False).index
+
+# Buat plot menggunakan seaborn dengan palet warna yang lebih kontras
+sns.set(style="whitegrid")
+g = sns.FacetGrid(dw_df, col="season", hue="weathersit", col_wrap=4, height=6, palette="Dark2", hue_order=hue_order)
+g.map_dataframe(sns.histplot, x="cnt", bins=10, kde=True)
+g.add_legend()
+
+# Atur judul
+plt.subplots_adjust(top=0.9)
+plt.suptitle('Histogram Jumlah Sepeda yang Disewa per Musim dengan Variasi Kondisi Cuaca', fontweight='bold')
+plt.show()
+
+# Tampilkan plot pada Streamlit
+plt1 = plt.gcf()
+st.pyplot(plt1)
+st.caption(
+   """
+   """
+)
+
+
+st.markdown("---")
 # Time Series
 st.write("\n\n")
 st.subheader('Data Deret Waktu')
 
 # Plot the time series
 plt.figure(figsize=(25, 8))
-plt.plot(day_df.index, day_df['cnt'], marker='o', linestyle='-', color='#1380A1')
+plt.plot(dw_df.index, dw_df['cnt'], marker='o', linestyle='-', color='#1380A1')
 plt.title('Data Deret Waktu Dari Sistem berbagi Sepeda ')
 plt.xlabel('Date')
 plt.ylabel('Banyaknya sepeda')
@@ -244,7 +270,7 @@ if st.button("Interpretasi 1"):
 # Matriks Korelasi 
 st.write("\n\n")
 st.subheader('Matriks Korelasi')
-df = day_df.iloc[:, -7:]
+df = dw_df.iloc[:, -7:]
 
 # Plot heatmap
 def corrfunc(x, y, **kws):

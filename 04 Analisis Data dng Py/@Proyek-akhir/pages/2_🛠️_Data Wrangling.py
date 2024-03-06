@@ -119,6 +119,7 @@ dw_df['yr']= dw_df['yr'].astype('category')
 dw_df['weekday']= dw_df['weekday'].astype('category')
 dw_df['weathersit'] = dw_df['weathersit'].astype('category')
 
+st.session_state["dw_df"] = dw_df 
 
 with st.expander("**Syntax & Output**"):
     st.markdown(
