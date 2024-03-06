@@ -76,7 +76,7 @@ st.session_state["Date"] = Date
 # Page 1
 # METADATA
 st.write("## Metadata")
-st.markdown("> **Latarbelakang**")
+st.markdown("> 📷**Latarbelakang**")
 st.write(
     """
     **_Bike sharing_** atau Sistem berbagi sepeda adalah generasi baru dari **penyewaan sepeda tradisional** di mana seluruh proses mulai dari **keanggotaan**, **penyewaan**, dan **pengembalian** sepeda menjadi **otomatis**. Melalui sistem ini, pengguna dapat dengan mudah menyewa sepeda dari posisi tertentu dan mengembalikannya di posisi lain. Saat ini, terdapat **lebih dari 500 program** berbagi sepeda di seluruh dunia yang terdiri dari **lebih dari 500k sepeda**. Saat ini, terdapat minat yang besar terhadap sistem ini karena peran penting mereka dalam masalah lalu lintas, lingkungan dan kesehatan. 
@@ -85,14 +85,14 @@ st.write(
     """
 )
 st.markdown("---")
-st.markdown("> **Data set**")
+st.markdown("> 🧮**Data set**")
 st.write(
     """
     Proses penyewaan sepeda bersama sangat **berkorelasi** dengan **kondisi lingkungan** dan **musim**. Misalnya, **kondisi cuaca**, **curah hujan**, **hari dalam seminggu**, **musim**, **jam dalam sehari**, dan lain-lain dapat mempengaruhi perilaku penyewaan. Kumpulan data inti terkait dengan catatan historis selama **dua tahun** yang berkaitan dengan tahun **2011** dan **2012** dari sistem Capital Bikeshare, Washington D.C., Amerika Serikat yang tersedia untuk umum di http://capitalbikeshare.com/system-data. Kami mengumpulkan data tersebut dalam dua basis data **per jam** dan **per hari**, kemudian mengekstrak dan menambahkan **informasi cuaca** dan **musim** yang sesuai. Informasi cuaca diambil dari http://www.freemeteo.com.
     """
 )
 st.markdown("---")
-st.markdown("> **Tugas terkait**")
+st.markdown("> 📝**Tugas terkait**")
 st.write(
     """
     * **Regresi**:  
@@ -103,7 +103,7 @@ st.write(
     """
 )
 st.markdown("---")
-st.markdown("> **Karakteristik Dataset**")
+st.markdown("> 📚**Karakteristik Dataset**")
 st.write(
     """
     Baik hour.csv dan day.csv memiliki bidang berikut, kecuali hr yang tidak tersedia di day.csv
@@ -133,3 +133,15 @@ st.write(
 st.markdown("---")
 st.markdown("<h2 style='text-align: center; color: white;'>Tabel Data</h2>", unsafe_allow_html=True)
 st.dataframe(Hari)
+st.markdown("---")
+st.markdown("> 🤵🏽**Pertanyaan Bisnis**")
+st.write(
+    """
+    1. Bagaimana pola penggunaan sepeda berdasarkan musim dan kondisi cuaca di Washington D.C. selama dua tahun terakhir?
+        - **Visualisasi Data:**  
+             Histogram/Density plot jumlah sepeda yang disewa per musim dengan variasi kondisi cuaca sebagai warna atau bentuk yang berbeda-beda. Grafik garis menunjukkan tren penggunaan sepeda selama dua tahun terakhir berdasarkan musim.
+    2. Bagaimana pengaruh hari libur terhadap pola penggunaan sepeda di Washington D.C. selama dua tahun terakhir?
+        - **Visualisasi Data:**  
+              Grafik batang menunjukkan perbandingan jumlah sepeda yang disewa pada hari libur dan hari kerja selama dua tahun terakhir. Grafik garis menunjukkan tren penggunaan sepeda selama dua tahun terakhir dengan penandaan hari libur yang berbeda.
+    """
+)

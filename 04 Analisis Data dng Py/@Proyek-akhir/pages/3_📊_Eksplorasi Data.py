@@ -199,6 +199,27 @@ st.markdown("**Sebaran Total Sepeda yang disewakan**")
 st.image(Image.open(io.BytesIO(c_cnt.getvalue())), 
          caption='Distribusi data menunjukkan pola penyebaran yang simetris dan hampir mendekati distribusi normal. Dengan rata-rata sekitar 4504.35 dan standar deviasi sekitar 1937.21, kita bisa melihat bahwa pola penyebaran data ini menunjukkan kecenderungan simetris dan hampir menyerupai distribusi normal. Hal ini mungkin mencerminkan kestabilan dalam pola penggunaan sepeda yang disewakan, dengan jumlah yang relatif merata di berbagai waktu.')
 
+with st.expander("Summary"):
+    st.markdown(
+    '''
+    Summary Sebaran Data:
+    1. **Musim Gugur Mendominasi:**
+        Dalam rentang dua tahun yang diamati, musim gugur mencatat jumlah hari terbanyak dibandingkan dengan musim lainnya. Hal ini menunjukkan bahwa musim gugur mungkin menjadi waktu yang paling populer bagi pengguna sepeda.
+    2. **Cuaca Berkabut yang Sering Terjadi:**
+        Dengan 247 hari dengan kondisi cuaca berkabut, hal ini menunjukkan bahwa kabut adalah fenomena cuaca yang cukup umum di wilayah tersebut. Hal ini perlu dipertimbangkan dalam analisis pola penggunaan sepeda.
+    3. **Variasi Suhu yang Signifikan:**
+        Distribusi bimodal suhu menunjukkan adanya dua kondisi cuaca yang mungkin mempengaruhi penggunaan sepeda. Hal ini menyoroti pentingnya memahami variasi suhu untuk merencanakan kegiatan bersepeda yang nyaman.
+    4. **Keterkaitan Antara Kelembapan dan Kenyamanan:**
+        Distribusi kelembapan yang stabil menunjukkan bahwa kenyamanan saat bersepeda mungkin dipengaruhi oleh tingkat kelembapan. Informasi ini dapat digunakan untuk menyesuaikan layanan berbagi sepeda agar sesuai dengan preferensi pengguna.
+    5. **Perilaku Pengguna:** 
+        Distribusi jumlah pengguna biasa yang cenderung lebih sedikit menunjukkan bahwa ada sebagian besar pengguna yang tidak menggunakan layanan secara teratur. Hal ini dapat menjadi titik fokus dalam upaya meningkatkan penggunaan sepeda secara konsisten.
+    6. **Stabilitas Pengguna Terdaftar:**
+        Distribusi pengguna terdaftar yang merata menunjukkan bahwa pengguna terdaftar cenderung menggunakan layanan secara konsisten. Hal ini menunjukkan pentingnya menjaga kepuasan pengguna terdaftar untuk mempertahankan stabilitas penggunaan.
+    7. **Stabilitas Jumlah Sepeda yang Disewakan:**
+        Distribusi data yang hampir normal menunjukkan bahwa pola penggunaan sepeda secara keseluruhan relatif stabil selama dua tahun tersebut. Hal ini mencerminkan konsistensi dalam permintaan dan penawaran layanan berbagi sepeda di wilayah tersebut.
+    '''
+    )
+
 st.markdown("---")
 
 # Time Series
@@ -218,7 +239,7 @@ st.pyplot(plt1)
 
 # Interpretasi
 if st.button("Interpretasi 1"):   
-    st.write("Data deret waktu dari rentang 2011 hingga 2012 menunjukkan fluktuasi yang signifikan dalam jumlah total sepeda yang disewakan. Meskipun terjadi fluktuasi, terdapat kecenderungan peningkatan jumlah total sepeda yang disewakan seiring berjalannya waktu. Hal ini menunjukkan adanya pertumbuhan atau peningkatan permintaan terhadap layanan sewa sepeda selama periode tersebut.")
+    st.write("Meskipun terjadi fluktuasi, data deret waktu menunjukkan adanya kecenderungan peningkatan jumlah total sepeda yang disewakan seiring berjalannya waktu dari tahun 2011 hingga 2012. Hal ini mengindikasikan adanya pertumbuhan atau peningkatan permintaan terhadap layanan sewa sepeda selama periode tersebut, yang mungkin dapat menjadi peluang untuk pengembangan layanan di masa depan.")
 
 # Matriks Korelasi 
 st.write("\n\n")
@@ -265,4 +286,11 @@ st.pyplot(cor_matrix(df))
 
 # Interpretasi
 if st.button("Interpretasi 2"):   
-    st.write("Insight dari matriks korelasi menunjukkan bahwa peubah registered memiliki korelasi positif yang paling kuat dengan variabel respons cnt, sedangkan peubah hum memiliki korelasi negatif yang paling lemah. Ini menunjukkan bahwa jumlah sepeda yang disewakan yang didaftarkan (registered) memiliki keterkaitan yang erat dengan total jumlah sepeda yang disewakan secara keseluruhan (cnt), sedangkan kelembapan udara (hum) memiliki korelasi yang paling lemah dengan jumlah total sepeda yang disewakan.")
+    st.write(
+       """
+        * *Keterkaitan antara Variabel Registered dan Total Sepeda Disewakan:* 
+            Insight dari matriks korelasi menunjukkan bahwa variabel registered memiliki korelasi positif yang paling kuat dengan variabel respons cnt. Ini menunjukkan bahwa jumlah sepeda yang disewakan yang didaftarkan memiliki keterkaitan yang erat dengan total jumlah sepeda yang disewakan secara keseluruhan. Hal ini mengindikasikan bahwa pengguna terdaftar memiliki pengaruh signifikan terhadap total penggunaan layanan sewa sepeda.
+        * *Pengaruh Kelembapan Terhadap Jumlah Sepeda Disewakan:* 
+            Korelasi negatif yang lemah antara variabel kelembapan udara (hum) dan total jumlah sepeda yang disewakan (cnt) menunjukkan bahwa kelembapan udara memiliki dampak yang relatif kecil terhadap permintaan layanan sewa sepeda. Hal ini menunjukkan bahwa faktor cuaca seperti kelembapan mungkin tidak menjadi faktor utama dalam menentukan jumlah sepeda yang disewakan, dan faktor-faktor lain seperti musim atau kondisi cuaca lainnya mungkin memiliki pengaruh yang lebih signifikan.
+       """
+    )
