@@ -116,8 +116,8 @@ def img_capt(column, title, image_bytes, button_label, default_caption):
 
 # Menampilkan gambar dengan judul dan caption opsional di setiap kolom
 img_capt(c1, "Sebaran Musim", c_season, "Caption1", 'Dalam periode 2 tahun yang diamati, Musim Gugur mencatat jumlah hari terbanyak dibandingkan dengan musim lainnya, dengan total mencapai 188 hari.')
-img_capt(c2, "Sebaran Hari Libur", c_holiday, "Caption2", 'Hari Libur dalam 2 tahun sangatlah sedikit.')
-img_capt(c3, "Sebaran Cuaca", c_weathersit, "Caption3", 'Dalam 2 tahun cuaca sering berkabut.')
+img_capt(c2, "Sebaran Hari Libur", c_holiday, "Caption2", 'Hari Libur dalam rentang waktu dua tahun terbilang jarang.\nPada hari libur, terdapat hanya 21 hari, sedangkan pada hari biasa, terdapat 710 hari.')
+img_capt(c3, "Sebaran Cuaca", c_weathersit, "Caption3", 'Selama dua tahun, cuaca sering berkabut.\nTerjadi 247 hari dengan kondisi cuaca berkabut, 463 hari dengan cuaca cerah, dan hanya 21 hari dengan cuaca salju ringan.')
 
 st.markdown("---")
 
@@ -188,16 +188,16 @@ c_cnt = plot_kon(day_df, 'cnt')
 c4, c5, c6 = st.columns((1,1,1))
 c7, c8, c9 = st.columns((1,1,1))
 
-img_capt(c4, "Sebaran Musim", c_temp, "Caption4", 'Menyebar bimodal simetris.')
-img_capt(c5, "Sebaran Hari Libur", c_atemp, "Caption5", 'Menyebar bimodal asimetris.')
-img_capt(c6, "Sebaran Cuaca", c_hum, "Caption6", 'Cenderung simetris jika tanpa outlier di sebalah kiri (menjulur ke kiri).')
-img_capt(c7, "Sebaran Musim", c_windspeed, "Caption7", 'Menjulur ke kanan.')
-img_capt(c8, "Sebaran Musim", c_casual, "Caption8", 'Menjulur ke kanan.')
-img_capt(c9, "Sebaran Musim", c_registered, "Caption9", 'Menyebar Simetris, hampir menyebar normal.')
+img_capt(c4, "Sebaran Temperatur", c_temp, "Caption4", 'Pola distribusi yang bimodal dan simetris menunjukkan variasi suhu yang cukup signifikan. Dengan rata-rata sekitar 20.31, kita bisa melihat bahwa terdapat dua puncak distribusi suhu yang mungkin mencerminkan dua kondisi cuaca yang berbeda.')
+img_capt(c5, "Sebaran Suhu Perasaan", c_atemp, "Caption5", 'Distribusi bimodal dengan asimetri menunjukkan adanya variasi signifikan dalam persepsi suhu. Rata-rata suhu perasaan yang lebih rendah mungkin menunjukkan adanya kondisi cuaca yang berpotensi lebih dingin.')
+img_capt(c6, "Sebaran Kelembapan", c_hum, "Caption6", 'Distribusi simetris menunjukkan kecenderungan kelembapan yang stabil. Hal ini dapat mempengaruhi persepsi cuaca oleh pengguna, terutama dalam hal kenyamanan.')
+img_capt(c7, "Sebaran Kecepatan Angin", c_windspeed, "Caption7", 'Distribusi yang menjulur ke kanan menunjukkan adanya kemungkinan kecepatan angin yang lebih tinggi pada beberapa titik waktu. Hal ini dapat mempengaruhi keamanan dan kenyamanan saat bersepeda.')
+img_capt(c8, "Sebaran Pengguna Biasa", c_casual, "Caption8", 'Distribusi data cenderung memiliki ekor panjang ke arah kanan.\nTerdapat 731 data yang diamati, dengan rata-rata sekitar 848.176471 dan standar deviasi sekitar 686.622488. Nilai minimum data adalah 2, sementara nilai maksimumnya mencapai 3410. Distribusi data ini cenderung memiliki ekor panjang ke arah kanan, dengan nilai median (50%) sekitar 713. Quartil pertama (25%) berada di sekitar 315.5, sementara quartil ketiga (75%) berada di sekitar 1096.')
+img_capt(c9, "Sebaran Pengguna Terdaftar", c_registered, "Caption9", 'Distribusi yang simetris dan mendekati distribusi normal menunjukkan bahwa pengguna terdaftar memiliki kecenderungan yang lebih merata dalam menggunakan layanan ini. Hal ini bisa mencerminkan kestabilan dalam pola penggunaan sepeda terdaftar.')
     
 st.markdown("**Sebaran Total Sepeda yang disewakan**")
 st.image(Image.open(io.BytesIO(c_cnt.getvalue())), 
-         caption='Menyebar Simetris, hampir menyebar normal')
+         caption='Distribusi data menunjukkan pola penyebaran yang simetris dan hampir mendekati distribusi normal. Dengan rata-rata sekitar 4504.35 dan standar deviasi sekitar 1937.21, kita bisa melihat bahwa pola penyebaran data ini menunjukkan kecenderungan simetris dan hampir menyerupai distribusi normal. Hal ini mungkin mencerminkan kestabilan dalam pola penggunaan sepeda yang disewakan, dengan jumlah yang relatif merata di berbagai waktu.')
 
 st.markdown("---")
 
@@ -218,25 +218,51 @@ st.pyplot(plt1)
 
 # Interpretasi
 if st.button("Interpretasi 1"):   
-    st.write("Data deret waktunya sangat berfluktuatif. Namun walau begitu memiliki tren naik.")
-
+    st.write("Data deret waktu dari rentang 2011 hingga 2012 menunjukkan fluktuasi yang signifikan dalam jumlah total sepeda yang disewakan. Meskipun terjadi fluktuasi, terdapat kecenderungan peningkatan jumlah total sepeda yang disewakan seiring berjalannya waktu. Hal ini menunjukkan adanya pertumbuhan atau peningkatan permintaan terhadap layanan sewa sepeda selama periode tersebut.")
 
 # Matriks Korelasi 
 st.write("\n\n")
 st.subheader('Matriks Korelasi')
 df = day_df.iloc[:, -7:]
 
-# Menghitung matriks korelasi
-corr = df.corr()
-
 # Plot heatmap
-plt.figure(figsize=(14, 12))
-sns.heatmap(corr, annot=True, fmt=".2f", cmap='viridis', linewidths=0.5, linecolor='black')
-plt.title('Matriks Korelasi')
-plt.show()
-plt2 = plt.gcf()
-st.pyplot(plt2)
+def corrfunc(x, y, **kws):
+  r, p = stats.pearsonr(x, y)
+  p_stars = ''
+  if p <= 0.05:
+    p_stars = '*'
+  if p <= 0.01:
+    p_stars = '**'
+  if p <= 0.001:
+    p_stars = '***'
+  ax = plt.gca()
+  ax.annotate('r = {:.2f} '.format(r) + p_stars,
+              xy=(0.05, 0.9), xycoords=ax.transAxes)
+
+def annotate_colname(x, **kws):
+  ax = plt.gca()
+  ax.annotate(x.name, xy=(0.05, 0.9), xycoords=ax.transAxes,
+              fontweight='bold')
+
+def cor_matrix(df):
+  g = sns.PairGrid(df, palette=['red'], diag_sharey=False)
+  # Use normal regplot as `lowess=True` doesn't provide CIs.
+  # Upper
+  g.map_upper(sns.regplot, scatter_kws={'s': 20, 'color': 'DarkCyan'}, line_kws={'color': '#472a7a'}) 
+  # Diag
+  g.map_diag(sns.histplot, kde=True, kde_kws=dict(cut=3), alpha=.7, color='teal', edgecolor='black')
+  g.map_diag(annotate_colname)
+  # Lower
+  g.map_lower(sns.kdeplot, cmap='viridis')
+  g.map_lower(corrfunc)
+  # Remove axis labels, as they're in the diagonals.
+  for ax in g.axes.flatten():
+    ax.set_ylabel('')
+    ax.set_xlabel('')
+  return g
+
+st.pyplot(cor_matrix(df))
 
 # Interpretasi
 if st.button("Interpretasi 2"):   
-    st.write("Diasumsikan bahwa peubah `cnt` merupakah peubah respon. Sehingga yang kita perlu lihat hanyalah baris terakhir saja. Terlihat bahwa korelasi terkuat dimiliki oleh peubah `registered` yakni merupakan korelasi positif. Dan korelasi terlemah yakni dimiliki oleh peubah `hum` dengan nilai negatif.")
+    st.write("Insight dari matriks korelasi menunjukkan bahwa peubah registered memiliki korelasi positif yang paling kuat dengan variabel respons cnt, sedangkan peubah hum memiliki korelasi negatif yang paling lemah. Ini menunjukkan bahwa jumlah sepeda yang disewakan yang didaftarkan (registered) memiliki keterkaitan yang erat dengan total jumlah sepeda yang disewakan secara keseluruhan (cnt), sedangkan kelembapan udara (hum) memiliki korelasi yang paling lemah dengan jumlah total sepeda yang disewakan.")
