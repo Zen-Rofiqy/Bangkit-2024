@@ -9,6 +9,7 @@ import sqlalchemy as sqla
 import streamlit as st
 import time
 from sklearn.decomposition import PCA
+from sklearn.cluster import KMeans
 from scipy import stats
 import sys
 import io
@@ -26,6 +27,7 @@ st.markdown("<h1 style='text-align: center; color: white;'>📱 Unsupervised Lea
 st.markdown("---")
 
 data = st.session_state["data"]
+day_df = st.session_state["day_df"]
 
 min_date = data["dteday"].min()
 max_date = data["dteday"].max()
@@ -43,3 +45,6 @@ with st.sidebar:
         max_value=max_date,
         value=[min_date, max_date]
     )
+
+# Clustering
+st.subheader('K-Means Clustering')

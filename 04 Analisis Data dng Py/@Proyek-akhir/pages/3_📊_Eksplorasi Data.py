@@ -54,11 +54,11 @@ st.markdown("---")
 st.subheader('Jumlah Total')
 col1, col2, col3 = st.columns(3)
 with col1:
-    st.metric("  Total Rents", value=count(Date))
+    st.metric("  Total Sepeda yang Disewa", value=count(Date))
 with col2:
-    st.metric("  Total Membered", value=Date['registered'].sum())
+    st.metric("  Total Pengguna Terdaftar", value=Date['registered'].sum())
 with col3:
-    st.metric("  Total Regular", value=Date['casual'].sum())
+    st.metric("  Total Pengguna Biasa", value=Date['casual'].sum())
 st.markdown("---")
 
 # Sebaran Disktrit
