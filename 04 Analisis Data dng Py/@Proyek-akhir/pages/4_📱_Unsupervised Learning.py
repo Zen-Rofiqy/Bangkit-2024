@@ -48,3 +48,16 @@ with st.sidebar:
 
 # Clustering
 st.subheader('K-Means Clustering')
+km = list(zip(day_df.iloc[:, -7:]))
+inertias = []
+
+for i in range(1,11):
+    kmeans = KMeans(n_clusters=i)
+    kmeans.fit(km)
+    inertias.append(kmeans.inertia_)
+
+plt.plot(range(1,11), inertias, marker='o')
+plt.title('Elbow method')
+plt.xlabel('Number of clusters')
+plt.ylabel('Inertia')
+plt.show()
