@@ -16,6 +16,7 @@ import io
 from babel.numbers import format_currency
 import matplotlib.dates as mdates
 from PIL import Image
+from sklearn.preprocessing import StandardScaler
 
 # Setting
 st.set_page_config(
@@ -46,18 +47,59 @@ with st.sidebar:
         value=[min_date, max_date]
     )
 
+# Data
+st.write(
+    """
+    Data yang akan digunakan ialah data tanpa kolom `instant` dan `dteday`, dengan peubah 
+    """
+)
+
+clust_df = day_df.iloc[:, 2:]
+st.dataframe(clust_df)
 # Clustering
+# K-Means
 st.subheader('K-Means Clustering')
-km = list(zip(day_df.iloc[:, -7:]))
-inertias = []
+st.write(
+    """
+    > **Penentuan Jumlah *Cluster***
 
-for i in range(1,11):
-    kmeans = KMeans(n_clusters=i)
-    kmeans.fit(km)
-    inertias.append(kmeans.inertia_)
+    Ada beberapa metode yang biasa digunakan untuk menentukan jumlah *Cluster*, salah satunya adalah metode **Elbow**.
+    Pertama-tama data di *scaling* dahulu untuk setiap peubah (kolom) dengan mean 0, dan stan deviasi 1. 
+    """
+)
+#create scaled DataFrame where each variable has mean of 0 and standard dev of 1
+scaled_df = StandardScaler().fit_transform(day_df.iloc[:, -7:])
 
-plt.plot(range(1,11), inertias, marker='o')
-plt.title('Elbow method')
-plt.xlabel('Number of clusters')
-plt.ylabel('Inertia')
+# Elbow
+#initialize kmeans parameters
+kmeans_kwargs = {
+"init": "random",
+"n_init": 10,
+"random_state": 1,
+}
+
+#create list to hold SSE values for each k
+sse = []
+for k in range(1, 11):
+    kmeans = KMeans(n_clusters=k, **kmeans_kwargs)
+    kmeans.fit(scaled_df)
+    sse.append(kmeans.inertia_)
+
+#visualize results
+plt.plot(range(1, 11), sse)
+plt.xticks(range(1, 11))
+plt.xlabel("Number of Clusters")
+plt.ylabel("SSE")
 plt.show()
+plt1 = plt.gcf()
+st.pyplot(plt1)
+
+st.caption(
+    """
+    Metode Elbow menetukan *cluster* dengan melihat siku mana yang paling runcing. 
+    Terlihat bahwa siku yang paling runcing berada di nomor 2. 
+    Sehingga jumlah cluster yang optimal menurut metode elbow adalah 2.
+    """
+)
+st.markdown("---")
+

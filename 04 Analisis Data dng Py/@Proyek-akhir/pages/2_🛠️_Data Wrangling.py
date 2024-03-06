@@ -26,6 +26,7 @@ st.markdown("<h1 style='text-align: center; color: white;'>🛠️ Data Wranglin
 st.markdown("---")
 
 data = st.session_state["data"]
+day_df = st.session_state["day_df"]
 
 min_date = data["dteday"].min()
 max_date = data["dteday"].max()
@@ -48,58 +49,162 @@ with st.sidebar:
 st.subheader("Assessing Data")
 st.caption(
     """
-    Sebagai permulaan, kita memeriksa tipe data data dari tiap kolom yang terdapat dalam `data`. Proses ini dapat dilakukan menggunakan method `data.info()`.
+    Sebagai permulaan, kita memeriksa tipe data data dari tiap kolom yang terdapat dalam `day_df`. 
+    Proses ini dapat dilakukan menggunakan method `day_df.info()`.
+    Berikut merupakan tampilan dari data awal.
     """
 )
-st.markdown('`print(data.info())`')
-st.text(
-    """
-    ---------------------------------------------
-    <class 'pandas.core.frame.DataFrame'>
-    RangeIndex: 731 entries, 0 to 730
-    Data columns (total 16 columns):
-    #   Column      Non-Null Count  Dtype         
-    ---  ------      --------------  -----         
-    0   instant     731 non-null    int64         
-    1   dteday      731 non-null    datetime64[ns]
-    2   season      731 non-null    category      
-    3   yr          731 non-null    category      
-    4   mnth        731 non-null    int64         
-    5   holiday     731 non-null    object        
-    6   weekday     731 non-null    category      
-    7   workingday  731 non-null    int64         
-    8   weathersit  731 non-null    category      
-    9   temp        731 non-null    float64       
-    10  atemp       731 non-null    float64       
-    11  hum         731 non-null    float64       
-    12  windspeed   731 non-null    float64       
-    13  casual      731 non-null    int64         
-    14  registered  731 non-null    int64         
-    15  cnt         731 non-null    int64         
-    dtypes: category(4), datetime64[ns](1), float64(4), int64(6), object(1)
-    memory usage: 72.3+ KB
-    """
-)
+
+st.dataframe(day_df)
 st.caption(
     """
-    Jika diperhatikan, tidak ada masalah dengan tipe data dari seluruh kolom tersebut. Juga tidak ada perbedaan pada jumlah data pada kolom gender. Hal ini menunjukkan tidak adanya missing values pada semua kolom atau peubah.
+    **Notes:** memang berbeda dengan data pada **Main Page**, 
+    karena pada **Main Page** merupakan data yang sudah di sesuaikan enak dilihat.
+    Jadi beginilah tampilan dari data asli yang disimpan pada variabel `day_df`.
     """
 )
+
+with st.expander("**Syntax & Output**"):
+    st.markdown(
+        """
+        ```python
+        print(day_df.info())
+        ```
+        """
+    )
+    st.text(
+        """
+        <class 'pandas.core.frame.DataFrame'>
+        RangeIndex: 731 entries, 0 to 730
+        Data columns (total 16 columns):
+        #   Column      Non-Null Count  Dtype  
+        ---  ------      --------------  -----  
+        0   instant     731 non-null    int64  
+        1   dteday      731 non-null    object 
+        2   season      731 non-null    int64  
+        3   yr          731 non-null    int64  
+        4   mnth        731 non-null    int64  
+        5   holiday     731 non-null    int64  
+        6   weekday     731 non-null    int64  
+        7   workingday  731 non-null    int64  
+        8   weathersit  731 non-null    int64  
+        9   temp        731 non-null    float64
+        10  atemp       731 non-null    float64
+        11  hum         731 non-null    float64
+        12  windspeed   731 non-null    float64
+        13  casual      731 non-null    int64  
+        14  registered  731 non-null    int64  
+        15  cnt         731 non-null    int64  
+        dtypes: float64(4), int64(11), object(1)
+        memory usage: 91.5+ KB
+        """
+    )
+st.caption(
+    """
+    Jika diperhatikan, jumlah baris data semuanya itu sama yakni 731. Ini menandakan tiadak adanya *missing data*.
+    Namun tipe data masih belum sesuai, contohnya `season` seharusnya bertipe `category`.
+    """
+)
+
+dw_df = pd.DataFrame(day_df)
+dw_df['season'] = dw_df['season'].replace({1: 'M Semi', 2: 'M Panas', 3:"M Gugur", 4:"M Dingin"})
+dw_df['yr'] = dw_df['yr'].replace({0: '2011', 1: '2012'})
+dw_df['mnth']= dw_df['mnth'].astype('category')
+dw_df['holiday'] = dw_df['holiday'].replace({0: 'H Kerja', 1: 'H Libur'}).astype('category')
+dw_df['workingday']= dw_df['workingday'].astype('category')
+dw_df['weekday'] = dw_df['weekday'].replace({0: 'Senin', 1: 'Selasa', 2:'Rabu', 3:'Kamis', 4:"Jum'at", 5:"Sabtu", 6:"Minggu"})
+dw_df['weathersit'] = dw_df['weathersit'].replace({1: 'Cerah', 2: 'Berkabut', 3:'Salju Ringan', 4:'Hujan Lebat'})
+dw_df['season']= dw_df['season'].astype('category')
+dw_df['yr']= dw_df['yr'].astype('category')
+dw_df['weekday']= dw_df['weekday'].astype('category')
+dw_df['weathersit'] = dw_df['weathersit'].astype('category')
+
+
+with st.expander("**Syntax & Output**"):
+    st.markdown(
+        """
+        > **Syntax**
+        ```python
+        dw_df = pd.DataFrame(day_df)
+
+        dw_df['season'] = dw_df['season'].replace({1: 'M Semi', 2: 'M Panas', 3:"M Gugur", 4:"M Dingin"})
+        dw_df['yr'] = dw_df['yr'].replace({0: '2011', 1: '2012'})
+        dw_df['mnth']= dw_df['mnth'].astype('category')
+        dw_df['holiday'] = dw_df['holiday'].replace({0: 'H Kerja', 1: 'H Libur'}).astype('category')
+        dw_df['workingday']= dw_df['workingday'].astype('category')
+        dw_df['weekday'] = dw_df['weekday'].replace({0: 'Senin', 1: 'Selasa', 2:'Rabu', 3:'Kamis', 4:"Jum'at", 5:"Sabtu", 6:"Minggu"})
+        dw_df['weathersit'] = dw_df['weathersit'].replace({1: 'Cerah', 2: 'Berkabut', 3:'Salju Ringan', 4:'Hujan Lebat'})
+        dw_df['season']= dw_df['season'].astype('category')
+        dw_df['yr']= dw_df['yr'].astype('category')
+        dw_df['weekday']= dw_df['weekday'].astype('category')
+        dw_df['weathersit'] = dw_df['weathersit'].astype('category')
+
+        dw_df.info()
+        ```
+        """
+    )
+    st.caption(
+        """
+        **Notes:** `temp`, `hum`, dan `windspeed`tidak diubah seperti pada **Main Page**
+        karena data dw_df ini yang akan kita analisis, sehingga perlu dalam keadaan semula 
+        (setelah dibagi dengan angkanya masing-masing).
+        """
+    )
+    st.markdown("> **Output**")
+    st.text(
+        """
+        <class 'pandas.core.frame.DataFrame'>
+        RangeIndex: 731 entries, 0 to 730
+        Data columns (total 16 columns):
+        #   Column      Non-Null Count  Dtype         
+        ---  ------      --------------  -----         
+        0   instant     731 non-null    int64         
+        1   dteday      731 non-null    datetime64[ns]
+        2   season      731 non-null    category      
+        3   yr          731 non-null    category      
+        4   mnth        731 non-null    category      
+        5   holiday     731 non-null    category      
+        6   weekday     731 non-null    category      
+        7   workingday  731 non-null    category      
+        8   weathersit  731 non-null    category      
+        9   temp        731 non-null    float64       
+        10  atemp       731 non-null    float64       
+        11  hum         731 non-null    float64       
+        12  windspeed   731 non-null    float64       
+        13  casual      731 non-null    int64         
+        14  registered  731 non-null    int64         
+        15  cnt         731 non-null    int64         
+        dtypes: category(7), datetime64[ns](1), float64(4), int64(4)
+        memory usage: 57.9 KB
+        """
+    )
+st.caption(
+    """
+    Terlihat bahwa semua tipe data kini sudah sesuai.
+    """
+)
+st.markdown(
+    """
+    ---
+    > Hasil Data setelah disesuaikan
+    """
+)
+
 
 col1, col2= st.columns(2)
 with col1 : 
     st.markdown(""" Tipe Data """)  
-    st.dataframe(data.dtypes)
+    st.dataframe(dw_df.dtypes)
     st.caption("Terdapat 4 tipe data beruba, yakni kategorik, numerik (rasio dan interval), dan date.")
 with col2 :
     st.markdown(""" Data NA""")
-    st.dataframe(data.isnull().sum())
+    st.dataframe(dw_df.isnull().sum())
     st.caption("Memang terbukti bahwa tidak ada missing value pada `data`.")
-st.write("Jumlah data duplikat: " + str(data.duplicated().sum()))
+st.write("Jumlah data duplikat: " + str(dw_df.duplicated().sum()))
 st.caption("Tidak ada Data yang Duplikat")
 st.markdown("---")
 
-st. subheader("Cleaning Data")
+st. subheader("Tabel Data")
 st.markdown(""" Data setelah di cleaning""")
-st.dataframe(data)
-st.caption("Karena tidak ada masalah apapun, maka tidak perlu dilakukan penanganan apapun.")
+st.dataframe(dw_df)
+st.caption("Notes: `mnth` tidak diubah menjadi nama bulan karena lebih mudah jika dalam bentuk angka.")

@@ -35,6 +35,7 @@ st.session_state["day_df"] = day_df
 data = pd.DataFrame(day_df)
 data['season'] = data['season'].replace({1: 'M Semi', 2: 'M Panas', 3:"M Gugur", 4:"M Dingin"})
 data['yr'] = data['yr'].replace({0: '2011', 1: '2012'})
+data['mnth']= data['mnth'].astype('category')
 data['holiday'] = data['holiday'].replace({0: 'H Kerja', 1: 'H Libur'})
 data['weekday'] = data['weekday'].replace({0: 'Senin', 1: 'Selasa', 2:'Rabu', 3:'Kamis', 4:"Jum'at", 5:"Sabtu", 6:"Minggu"})
 data['weathersit'] = data['weathersit'].replace({1: 'Cerah', 2: 'Berkabut', 3:'Salju Ringan', 4:'Hujan Lebat'})
