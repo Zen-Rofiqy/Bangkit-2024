@@ -17,6 +17,7 @@ from babel.numbers import format_currency
 import matplotlib.dates as mdates
 from PIL import Image
 from sklearn.preprocessing import StandardScaler
+import plotly.graph_objects as go
 
 # Setting
 st.set_page_config(

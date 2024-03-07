@@ -107,10 +107,12 @@ st.caption(
 )
 
 dw_df = pd.DataFrame(day_df)
+
 dw_df['season'] = dw_df['season'].replace({1: 'M Semi', 2: 'M Panas', 3:"M Gugur", 4:"M Dingin"})
 dw_df['yr'] = dw_df['yr'].replace({0: '2011', 1: '2012'})
 dw_df['mnth']= dw_df['mnth'].astype('category')
-dw_df['holiday'] = dw_df['holiday'].replace({0: 'H Kerja', 1: 'H Libur'}).astype('category')
+dw_df['holiday'] = dw_df['holiday'].replace({0: '-', 1: 'Libur'}).astype('category')
+dw_df['workingday'] = dw_df['workingday'].replace({0: 'WeekDay', 1: 'WeekEnd'}).astype('category')
 dw_df['workingday']= dw_df['workingday'].astype('category')
 dw_df['weekday'] = dw_df['weekday'].replace({0: 'Senin', 1: 'Selasa', 2:'Rabu', 3:'Kamis', 4:"Jum'at", 5:"Sabtu", 6:"Minggu"})
 dw_df['weathersit'] = dw_df['weathersit'].replace({1: 'Cerah', 2: 'Berkabut', 3:'Salju Ringan', 4:'Hujan Lebat'})
@@ -131,7 +133,8 @@ with st.expander("**Syntax & Output**"):
         dw_df['season'] = dw_df['season'].replace({1: 'M Semi', 2: 'M Panas', 3:"M Gugur", 4:"M Dingin"})
         dw_df['yr'] = dw_df['yr'].replace({0: '2011', 1: '2012'})
         dw_df['mnth']= dw_df['mnth'].astype('category')
-        dw_df['holiday'] = dw_df['holiday'].replace({0: 'H Kerja', 1: 'H Libur'}).astype('category')
+        dw_df['holiday'] = dw_df['holiday'].replace({0: '-', 1: 'Libur'}).astype('category')
+        dw_df['workingday'] = dw_df['workingday'].replace({0: 'WeekDay', 1: 'WeekEnd'}).astype('category')
         dw_df['workingday']= dw_df['workingday'].astype('category')
         dw_df['weekday'] = dw_df['weekday'].replace({0: 'Senin', 1: 'Selasa', 2:'Rabu', 3:'Kamis', 4:"Jum'at", 5:"Sabtu", 6:"Minggu"})
         dw_df['weathersit'] = dw_df['weathersit'].replace({1: 'Cerah', 2: 'Berkabut', 3:'Salju Ringan', 4:'Hujan Lebat'})

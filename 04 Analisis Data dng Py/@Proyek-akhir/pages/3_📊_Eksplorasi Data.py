@@ -24,6 +24,7 @@ st.set_page_config(
 )
 
 data = st.session_state["data"]
+day_df = st.session_state["day_df"]
 dw_df = st.session_state["dw_df"]
 
 min_date = data["dteday"].min()
@@ -222,6 +223,8 @@ with st.expander("Summary"):
 
 st.markdown("---")
 
+st.markdown("<h1 style=color: white;'>Menjawab Pertanyaan Bisnis</h1>", unsafe_allow_html=True)
+
 st.write("\n\n")
 st.subheader('Sebaran `cnt` per Musim tiap kondisi Cuaca')
 # Urutan hue berdasarkan jumlah cnt
@@ -267,20 +270,95 @@ st.markdown("---")
 st.write("\n\n")
 st.subheader('Data Deret Waktu')
 
+# Konversi kolom 'dteday' menjadi tipe data datetime
+dw_df['dteday'] = day_df['dteday'] 
+dw_df['dteday'] = pd.to_datetime(dw_df['dteday'])
+
+import matplotlib.pyplot as plt
+import pandas as pd
+
+# Konversi kolom 'dteday' menjadi tipe data datetime
+dw_df['dteday'] = pd.to_datetime(dw_df['dteday'])
+
 # Plot the time series
-plt.figure(figsize=(25, 8))
-plt.plot(dw_df.index, dw_df['cnt'], marker='o', linestyle='-', color='#1380A1')
-plt.title('Data Deret Waktu Dari Sistem berbagi Sepeda ')
+plt.figure(figsize=(35, 8), dpi=300)
+plt.plot(dw_df['dteday'], dw_df['cnt'], linestyle='-', color='black', alpha=0.7, linewidth=2.5)
+plt.scatter(dw_df[dw_df['holiday'] != '-']['dteday'], dw_df[dw_df['holiday'] != '-']['cnt'], marker='x', color='red', label='Hari Libur', s=100)
+plt.scatter(dw_df[dw_df['workingday'] != 'WeekDay']['dteday'], dw_df[dw_df['workingday'] != 'WeekDay']['cnt'], marker='o', color='red', label='Week End', s=10)
+plt.scatter(dw_df[dw_df['workingday'] != 'WeekEnd']['dteday'], dw_df[dw_df['workingday'] != 'WeekEnd']['cnt'], marker='o', color='green', label='Week Day', s=50)
+plt.title('Data Deret Waktu Dari Sistem berbagi Sepeda', fontsize=20)
 plt.xlabel('Date')
 plt.ylabel('Banyaknya sepeda')
 plt.grid(True)
+
+# Menyesuaikan format tanggal pada sumbu x
+plt.gcf().autofmt_xdate()
+
+# Warna untuk setiap musim
+colors = ['green', 'red', 'orange', 'blue']
+
+# Daftar untuk menyimpan legenda unik
+unique_legends = []
+
+# Highlight each season's time range
+for season, color in zip(dw_df['season'].unique(), colors):
+    season_data = dw_df[dw_df['season'] == season]
+    sorted_dates = season_data['dteday'].sort_values()
+    
+    start_range = None
+    first_iteration = True
+    for i in range(len(sorted_dates)):
+        current_date = sorted_dates.iloc[i]
+        if start_range is None:
+            start_range = current_date
+        elif (current_date - sorted_dates.iloc[i - 1]).days > 1 or i == len(sorted_dates) - 1:
+            end_range = sorted_dates.iloc[i - 1] if i != len(sorted_dates) - 1 else current_date
+            
+            # Tambahkan legenda unik jika belum ada
+            if season not in unique_legends:
+                unique_legends.append(season)
+                plt.axvspan(start_range, end_range, color=color, alpha=0.3, label=season)
+            else:
+                plt.axvspan(start_range, end_range, color=color, alpha=0.3)
+            
+            start_range = None
+            first_iteration = False
+
+# Menambahkan legenda
+plt.legend()
+
 plt.show()
 plt1 = plt.gcf()
 st.pyplot(plt1)
 
 # Interpretasi
 with st.expander("Interpretasi"):
-    st.write("Meskipun terjadi fluktuasi, data deret waktu menunjukkan adanya kecenderungan peningkatan jumlah total sepeda yang disewakan seiring berjalannya waktu dari tahun 2011 hingga 2012. Hal ini mengindikasikan adanya pertumbuhan atau peningkatan permintaan terhadap layanan sewa sepeda selama periode tersebut, yang mungkin dapat menjadi peluang untuk pengembangan layanan di masa depan.")
+    st.write("Meskipun terjadi fluktuasi, Data deret waktu menunjukkan adanya kecenderungan peningkatan jumlah total sepeda yang disewakan seiring berjalannya waktu dari tahun 2011 hingga 2012. Hal ini mengindikasikan adanya pertumbuhan atau peningkatan permintaan terhadap layanan sewa sepeda selama periode tersebut, yang mungkin dapat menjadi peluang untuk pengembangan layanan di masa depan.")
+
+
+# Bar Chart
+st.subheader('Sepeda yang Disewa pada Hari Libur dan Hari Kerja')
+# Menghitung total penyewaan sepeda pada hari libur dan hari kerja
+grouped_data = dw_df.groupby('holiday')['cnt'].sum()
+
+# Membuat Bar Chart
+plt.figure(figsize=(10, 6))
+bars = plt.bar(grouped_data.index, grouped_data.values, color=['#1f77b4', '#ff7f0e'])
+
+plt.title('Perbandingan Jumlah Sepeda yang Disewa pada Hari Libur dan Hari Kerja')
+plt.xlabel('Hari')
+plt.ylabel('Total Penyewaan Sepeda')
+plt.xticks(ticks=[0, 1], labels=['Hari Kerja', 'Hari Libur'], rotation=0)
+
+# Menambahkan jumlah penyewaan di atas setiap bar
+for bar in bars:
+    yval = bar.get_height()
+    plt.text(bar.get_x() + bar.get_width()/2, yval, "{:,}".format(int(yval)), ha='center', va='bottom', fontsize=10)
+
+plt.grid(linewidth=0) 
+plt.show()
+plt1 = plt.gcf()
+st.pyplot(plt1)
 
 # Matriks Korelasi 
 st.write("\n\n")
