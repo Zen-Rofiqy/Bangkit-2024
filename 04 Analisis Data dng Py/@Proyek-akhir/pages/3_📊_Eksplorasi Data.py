@@ -98,12 +98,14 @@ def plot_disk(data_frame, column, names=None):
 
 # Menyimpan plot 
 c_season = plot_disk(dw_df, 'season', names=['Musim Semi', 'Musim Panas', 'Musim Gugur', 'Musim Dingin'])
-c_holiday = plot_disk(dw_df, 'holiday', names=['Hari Kerja', 'Hari Libur'])
+c_holiday = plot_disk(dw_df, 'holiday', names=['Hari Lain', 'Hari Libur'])
+c_workingday = plot_disk(dw_df, 'workingday', names=['WeekEnd', 'WeekDay'])
 c_weathersit = plot_disk(dw_df, 'weathersit', names=['Cerah', 'Berkabut', 'Salju Ringan'])
 
 # Menampilkan plot
 # Membuat tiga kolom
-c1, c2, c3 = st.columns((1,1,1))
+c1, c2 = st.columns((1,1))
+c3, c4 = st.columns((1,1))
 
 # Mendefinisikan fungsi untuk menampilkan gambar dengan judul dan caption opsional
 def img_capt(column, title, image_bytes, button_label, default_caption):
@@ -117,8 +119,9 @@ def img_capt(column, title, image_bytes, button_label, default_caption):
 
 # Menampilkan gambar dengan judul dan caption opsional di setiap kolom
 img_capt(c1, "Sebaran Musim", c_season, "Caption1", 'Dalam periode 2 tahun yang diamati, Musim Gugur mencatat jumlah hari terbanyak dibandingkan dengan musim lainnya, dengan total mencapai 188 hari.')
-img_capt(c2, "Sebaran Hari Libur", c_holiday, "Caption2", 'Hari Libur dalam rentang waktu dua tahun terbilang jarang.\nPada hari libur, terdapat hanya 21 hari, sedangkan pada hari biasa, terdapat 710 hari.')
-img_capt(c3, "Sebaran Cuaca", c_weathersit, "Caption3", 'Selama dua tahun, cuaca sering berkabut.\nTerjadi 247 hari dengan kondisi cuaca berkabut, 463 hari dengan cuaca cerah, dan hanya 21 hari dengan cuaca salju ringan.')
+img_capt(c2, "Sebaran Hari Libur Nasional", c_holiday, "Caption2.1", 'Hari Libur Nasional (tidak termasuk weekend) dalam rentang waktu dua tahun terbilang jarang.\nPada hari libur nasional, terdapat hanya 21 hari, sedangkan pada hari biasa, terdapat 710 hari.')
+img_capt(c3, "Sebaran Hari WeekEnd & WeekDay", c_workingday, "Caption2.2", 'Hari Libur Nasional (tidak termasuk weekend) dalam rentang waktu dua tahun terbilang jarang.\nPada hari libur nasional, terdapat hanya 21 hari, sedangkan pada hari biasa, terdapat 710 hari.')
+img_capt(c4, "Sebaran Cuaca", c_weathersit, "Caption3", 'Selama dua tahun, cuaca sering berkabut.\nTerjadi 247 hari dengan kondisi cuaca berkabut, 463 hari dengan cuaca cerah, dan hanya 21 hari dengan cuaca salju ringan.')
 
 st.markdown("---")
 
@@ -187,7 +190,8 @@ c_cnt = plot_kon(dw_df, 'cnt')
 # Menampilkan plot
 # Membuat tiga kolom
 c4, c5, c6 = st.columns((1,1,1))
-c7, c8, c9 = st.columns((1,1,1))
+c7, c8 = st.columns((1,1))
+c9, c10 = st.columns((1,1))
 
 img_capt(c4, "Sebaran Temperatur", c_temp, "Caption4", 'Pola distribusi yang bimodal dan simetris menunjukkan variasi suhu yang cukup signifikan. Dengan rata-rata sekitar 20.31, kita bisa melihat bahwa terdapat dua puncak distribusi suhu yang mungkin mencerminkan dua kondisi cuaca yang berbeda.')
 img_capt(c5, "Sebaran Suhu Perasaan", c_atemp, "Caption5", 'Distribusi bimodal dengan asimetri menunjukkan adanya variasi signifikan dalam persepsi suhu. Rata-rata suhu perasaan yang lebih rendah mungkin menunjukkan adanya kondisi cuaca yang berpotensi lebih dingin.')
@@ -195,11 +199,8 @@ img_capt(c6, "Sebaran Kelembapan", c_hum, "Caption6", 'Distribusi simetris menun
 img_capt(c7, "Sebaran Kecepatan Angin", c_windspeed, "Caption7", 'Distribusi yang menjulur ke kanan menunjukkan adanya kemungkinan kecepatan angin yang lebih tinggi pada beberapa titik waktu. Hal ini dapat mempengaruhi keamanan dan kenyamanan saat bersepeda.')
 img_capt(c8, "Sebaran Pengguna Biasa", c_casual, "Caption8", 'Distribusi data cenderung memiliki ekor panjang ke arah kanan.\nTerdapat 731 data yang diamati, dengan rata-rata sekitar 848.176471 dan standar deviasi sekitar 686.622488. Nilai minimum data adalah 2, sementara nilai maksimumnya mencapai 3410. Distribusi data ini cenderung memiliki ekor panjang ke arah kanan, dengan nilai median (50%) sekitar 713. Quartil pertama (25%) berada di sekitar 315.5, sementara quartil ketiga (75%) berada di sekitar 1096.')
 img_capt(c9, "Sebaran Pengguna Terdaftar", c_registered, "Caption9", 'Distribusi yang simetris dan mendekati distribusi normal menunjukkan bahwa pengguna terdaftar memiliki kecenderungan yang lebih merata dalam menggunakan layanan ini. Hal ini bisa mencerminkan kestabilan dalam pola penggunaan sepeda terdaftar.')
+img_capt(c10, "Sebaran Total Sepeda yang disewakan", c_cnt, "Caption10", 'Distribusi data menunjukkan pola penyebaran yang simetris dan hampir mendekati distribusi normal. Dengan rata-rata sekitar 4504.35 dan standar deviasi sekitar 1937.21, kita bisa melihat bahwa pola penyebaran data ini menunjukkan kecenderungan simetris dan hampir menyerupai distribusi normal. Hal ini mungkin mencerminkan kestabilan dalam pola penggunaan sepeda yang disewakan, dengan jumlah yang relatif merata di berbagai waktu.')
     
-st.markdown("**Sebaran Total Sepeda yang disewakan**")
-st.image(Image.open(io.BytesIO(c_cnt.getvalue())), 
-         caption='Distribusi data menunjukkan pola penyebaran yang simetris dan hampir mendekati distribusi normal. Dengan rata-rata sekitar 4504.35 dan standar deviasi sekitar 1937.21, kita bisa melihat bahwa pola penyebaran data ini menunjukkan kecenderungan simetris dan hampir menyerupai distribusi normal. Hal ini mungkin mencerminkan kestabilan dalam pola penggunaan sepeda yang disewakan, dengan jumlah yang relatif merata di berbagai waktu.')
-
 with st.expander("Summary"):
     st.markdown(
     '''
@@ -263,6 +264,84 @@ with st.expander("Summary"):
     Insight-insight ini dapat membantu perusahaan penyewaan sepeda dalam menganalisis pengaruh kondisi lingkungan dan musim terhadap tren penyewaan sepeda, serta mengembangkan strategi yang tepat untuk meningkatkan efisiensi operasional dan memenuhi permintaan pelanggan secara optimal.
     '''
     )
+st.markdown("---")
+
+
+# Pie Chart
+st.subheader('Sepeda yang Disewa pada Hari Libur dan Hari Kerja')
+col1, col2= st.columns(2)
+with col1:
+    st.markdown("**Banyaknya Hari kerja dan Hari libur**")
+    # Menghitung jumlah hari libur & weekend
+    holiday_weekend_count = dw_df[(dw_df['holiday'] == 'Libur') & (dw_df['workingday'] == 'WeekEnd')].shape[0] + dw_df[(dw_df['holiday'] == '-') & (dw_df['workingday'] == 'WeekEnd')].shape[0]
+
+    # Menghitung jumlah hari kerja/weekday
+    weekday_count = dw_df[(dw_df['holiday'] == '-') & (dw_df['workingday'] == 'WeekDay')].shape[0] + dw_df[(dw_df['holiday'] == 'Libur') & (dw_df['workingday'] == 'WeekDay')].shape[0]
+
+    # Membuat Pie Chart
+    fig, ax = plt.subplots(figsize=(8, 8))
+
+    # Plotting untuk hari libur & weekend dan hari kerja/weekday
+    labels = ['Hari Libur & Weekend', 'Hari Kerja/Weekday']
+    sizes = [holiday_weekend_count, weekday_count]
+    colors = ['#dddddd', '#1380A1']
+
+    # Menampilkan pie chart
+    wedges, texts, autotexts = ax.pie(sizes, labels=labels, colors=colors, autopct='%1.1f%%', startangle=90)
+
+    # Menambahkan frekuensi di sebelah label
+    for i, label in enumerate(labels):
+        texts[i].set_text(label + f'\n({sizes[i]} hari)')
+
+    ax.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
+    plt.show()
+    plt1 = plt.gcf()
+    st.pyplot(plt1)
+
+with col2:
+    st.markdown("**Banyaknya sepeda yang disewa per hari kerja/libur**")
+    # Dummy grouped_data (digunakan untuk demo)
+    grouped_data = dw_df.groupby(['holiday', 'workingday'])['cnt'].sum()
+
+    # Menghitung jumlah hari libur & weekend
+    holiday_weekend_count = dw_df[(dw_df['holiday'] == 'Libur') & (dw_df['workingday'] == 'WeekEnd')].shape[0] + dw_df[(dw_df['holiday'] == '-') & (dw_df['workingday'] == 'WeekEnd')].shape[0]
+
+    # Menghitung jumlah hari kerja/weekday
+    weekday_count = dw_df[(dw_df['holiday'] == '-') & (dw_df['workingday'] == 'WeekDay')].shape[0] + dw_df[(dw_df['holiday'] == 'Libur') & (dw_df['workingday'] == 'WeekDay')].shape[0]
+
+    # Menghitung total penyewaan sepeda pada hari libur/weekend dan hari kerja/weekday
+    holiday_weekend = grouped_data.loc[('Libur', 'WeekEnd')] + grouped_data.loc[('-', 'WeekEnd')]
+    weekday_weekend = grouped_data.loc[('-', 'WeekDay')] + grouped_data.loc[('Libur', 'WeekDay')]
+
+    # Membuat Pie Chart
+    fig, ax = plt.subplots(figsize=(8, 8))
+
+    # Plotting untuk hari libur/weekend dan hari kerja/weekday
+    labels = ['Hari Libur & Weekend', 'Hari Kerja/Weekday']
+    sizes = [holiday_weekend / holiday_weekend_count, weekday_weekend / weekday_count]
+    colors = ['#dddddd', '#1380A1']
+
+    # Menampilkan pie chart
+    wedges, texts, autotexts = ax.pie(sizes, labels=labels, colors=colors, autopct='%1.1f%%', startangle=90)
+
+    # Menambahkan frekuensi di sebelah label
+    for i, label in enumerate(labels):
+        texts[i].set_text(label + f'\n({sizes[i]:.2f} sepeda/hari)')
+
+    ax.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
+    plt.show()
+    plt1 = plt.gcf()
+    st.pyplot(plt1)
+
+st.caption(
+    """
+    **Notes:** Hari libur disini merupakan gabungan hari libur nasional dan hari Weekend. 
+    Sedangkan hari kerja diisini merupakan hari Weekday yang bukan hari libur nasional.
+
+    Perbedaan antara jumlah sepeda yang disewa pada hari libur dan kerja per hari ternyata tidak
+    berbeda terlalu jauh. Walau begitu, frekuensi penyewaan sepeda lebih banyak pada hari kerja. 
+    """
+)
 
 
 st.markdown("---")
@@ -295,7 +374,7 @@ plt.grid(True)
 plt.gcf().autofmt_xdate()
 
 # Warna untuk setiap musim
-colors = ['green', 'red', 'orange', 'blue']
+colors = ['#feb813', '#e9324c', '#973a06', '#005e72']
 
 # Daftar untuk menyimpan legenda unik
 unique_legends = []
@@ -332,33 +411,30 @@ plt1 = plt.gcf()
 st.pyplot(plt1)
 
 # Interpretasi
-with st.expander("Interpretasi"):
-    st.write("Meskipun terjadi fluktuasi, Data deret waktu menunjukkan adanya kecenderungan peningkatan jumlah total sepeda yang disewakan seiring berjalannya waktu dari tahun 2011 hingga 2012. Hal ini mengindikasikan adanya pertumbuhan atau peningkatan permintaan terhadap layanan sewa sepeda selama periode tersebut, yang mungkin dapat menjadi peluang untuk pengembangan layanan di masa depan.")
+with st.expander("Insight pola penyewaan sepeda"):
+    st.write(
+        """
+        **1. Tren Musiman:**
 
+        Terlihat bahwa tren penyewaan sepeda cenderung mengikuti pola musiman, dengan peningkatan pada musim semi dan musim panas, sedangkan pada musim gugur dan musim dingin cenderung stabil atau menurun. Hal ini mengindikasikan adanya pola permintaan yang terkait dengan musim dan cuaca.
 
-# Bar Chart
-st.subheader('Sepeda yang Disewa pada Hari Libur dan Hari Kerja')
-# Menghitung total penyewaan sepeda pada hari libur dan hari kerja
-grouped_data = dw_df.groupby('holiday')['cnt'].sum()
+        **2. Pengaruh Hari dalam Seminggu:**
 
-# Membuat Bar Chart
-plt.figure(figsize=(10, 6))
-bars = plt.bar(grouped_data.index, grouped_data.values, color=['#1f77b4', '#ff7f0e'])
+        Hari-hari weekend memiliki tingkat penyewaan yang lebih tinggi dibandingkan dengan hari weekday. Namun, saat permintaan meningkat, perbedaan antara hari weekend dan weekday menjadi tidak terlalu signifikan. Ini menunjukkan bahwa permintaan sepeda cenderung bergantung pada faktor-faktor tertentu seperti cuaca atau acara khusus, bukan hanya hari dalam seminggu.
 
-plt.title('Perbandingan Jumlah Sepeda yang Disewa pada Hari Libur dan Hari Kerja')
-plt.xlabel('Hari')
-plt.ylabel('Total Penyewaan Sepeda')
-plt.xticks(ticks=[0, 1], labels=['Hari Kerja', 'Hari Libur'], rotation=0)
+        **3. Pengaruh Hari Libur:**
 
-# Menambahkan jumlah penyewaan di atas setiap bar
-for bar in bars:
-    yval = bar.get_height()
-    plt.text(bar.get_x() + bar.get_width()/2, yval, "{:,}".format(int(yval)), ha='center', va='bottom', fontsize=10)
+        Meskipun hari libur nasional cenderung memiliki tingkat penyewaan yang lebih rendah dibandingkan dengan hari biasa, ada beberapa hari libur yang memiliki tingkat penyewaan yang tinggi. Ini menunjukkan bahwa ada faktor lain selain hari libur yang memengaruhi permintaan, seperti perayaan lokal atau acara khusus.
 
-plt.grid(linewidth=0) 
-plt.show()
-plt1 = plt.gcf()
-st.pyplot(plt1)
+        **4. Pola Turun Drastis pada Awal 2013:**
+
+        Terdapat penurunan drastis dalam jumlah penyewaan sepeda pada awal tahun 2013, terutama pada musim dingin. Hal ini mungkin disebabkan oleh perubahan faktor eksternal seperti kebijakan baru, perubahan tren, atau kondisi ekonomi.
+
+        **5. Potensi Pengembangan Layanan:**
+
+        Tren peningkatan jumlah total penyewaan sepeda dari tahun 2011 hingga 2012 menunjukkan adanya permintaan yang meningkat terhadap layanan penyewaan sepeda. Hal ini dapat menjadi peluang bagi penyedia layanan untuk mengembangkan atau meningkatkan layanan mereka, seperti menambah jumlah sepeda, meningkatkan promosi, atau menyesuaikan harga dengan pola permintaan yang berubah-ubah.
+        """
+    )
 
 # Matriks Korelasi 
 st.write("\n\n")

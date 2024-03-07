@@ -25,11 +25,12 @@ st.set_page_config(
     page_icon="🚲",
 )
 
-st.markdown("<h1 style='text-align: center; color: white;'>📱 Unsupervised Learing</h1>", unsafe_allow_html=True)
+st.markdown("<h1 style='text-align: center; color: white;'>📱 Unsupervised Learning</h1>", unsafe_allow_html=True)
 st.markdown("---")
 
 data = st.session_state["data"]
 day_df = st.session_state["day_df"]
+dw_df = st.session_state["dw_df"]
 
 min_date = data["dteday"].min()
 max_date = data["dteday"].max()
@@ -51,12 +52,25 @@ with st.sidebar:
 # Data
 st.write(
     """
-    Data yang akan digunakan ialah data tanpa kolom `instant` dan `dteday`, dengan peubah 
+    Data yang akan digunakan ialah data tanpa kolom `instant` dan `dteday`, serperti tabel berikut.
     """
 )
 
-clust_df = day_df.iloc[:, 2:]
-st.dataframe(clust_df)
+st.dataframe(dw_df.drop(['dteday', 'instant'], axis=1))
+st.caption(
+    """
+    Terlihat bahwa ada beberapa data yang kategorik, jadi Data akan dibuat dummy variable dulu
+    sebelum dilakukan *clustering*.
+    """
+)
+
+#Dummy
+dw_dummy = pd.get_dummies(dw_df.drop(['dteday', 'instant'], axis=1), drop_first=True)
+
+with st.expander("Hasil Dummy Variable"):
+    st.dataframe(dw_dummy)  
+
+
 # Clustering
 # K-Means
 st.subheader('K-Means Clustering')
@@ -69,7 +83,7 @@ st.write(
     """
 )
 #create scaled DataFrame where each variable has mean of 0 and standard dev of 1
-scaled_df = StandardScaler().fit_transform(day_df.iloc[:, -7:])
+scaled_df = StandardScaler().fit_transform(dw_dummy)
 
 # Elbow
 #initialize kmeans parameters
@@ -104,3 +118,123 @@ st.caption(
 )
 st.markdown("---")
 
+#kmeans
+#instantiate the k-means class, using optimal number of clusters
+kmeans = KMeans(init="random", n_clusters=2, n_init=10, random_state=1)
+
+#fit k-means algorithm to data
+kmeans.fit(scaled_df)
+
+#append cluster assingments to original DataFrame
+km_data = dw_df
+km_data['cluster'] = kmeans.labels_
+
+col = km_data.pop('cluster')
+km_data.insert(1, col.name, col)
+
+st.subheader("Hasil K-Means Clustering")
+
+# Hasil cluster
+st.write("> **Tabel Data**")
+st.dataframe(km_data)
+st.caption(
+    """
+    Keanggotaan cluster bisa dilihat pada kolom cluster yakni kolom kedua. 
+    Angka nol tersebut menandakan bahwa baris tersebut merupakan anggota dari
+    cluster 0. 
+    """
+)
+st.markdown("---")
+
+st.write("> **Perbandingan jumlah antar cluster**")
+st.dataframe(km_data["cluster"].value_counts())
+st.caption(
+    """
+    Perbandingan jumlah antara cluster 0 dengan cluster 1 tidak berbeda jauh. 
+    Hanya memiliki selisih 75 anggota saja.
+    """
+)
+
+st.markdown("---")
+# Cluster Profiling
+st.write("> **Cluster Profiling**")
+
+# Memisahkan kolom numerik dan non-numerik
+numeric_cols = km_data.select_dtypes(include=['number']).columns
+non_numeric_cols = km_data.select_dtypes(exclude=['number']).columns
+
+# Membuat list kategori numerik
+categories = numeric_cols[2:]  # Menggunakan semua kolom numerik (termasuk 'temp')
+
+# Daftar warna kalem untuk setiap cluster
+colors = ['rgba(153, 204, 255, 0.5)', 'rgba(204, 255, 204, 0.5)', 'rgba(255, 204, 204, 0.5)', 
+          'rgba(204, 204, 255, 0.5)', 'rgba(255, 204, 153, 0.5)', 'rgba(204, 153, 255, 0.5)']
+
+# Membuat figure
+fig = go.Figure()
+
+# Menambahkan trace untuk setiap cluster
+for i, cluster in enumerate(km_data['cluster'].unique()):
+    cluster_data = km_data[km_data['cluster'] == cluster][categories]
+    fig.add_trace(go.Scatterpolar(
+        r=cluster_data.mean().values,
+        theta=categories,
+        fill='toself',  # Fill area dengan warna
+        fillcolor=colors[i % len(colors)],  # Warna fill sesuai cluster
+        mode='lines',  # Menampilkan garis dan area fill
+        name=f'Cluster {cluster}',
+        line=dict(color='white')  # Mengatur warna garis menjadi putih
+    ))
+
+# Mengatur layout
+fig.update_layout(
+    polar=dict(
+        radialaxis=dict(visible=True, color='white'),  # Mengatur warna radial axis menjadi putih
+        angularaxis=dict(color='white'),  # Mengatur warna angular axis menjadi putih
+        bgcolor='black'  # Mengatur warna latar belakang menjadi hitam
+    ),
+    showlegend=True,
+    plot_bgcolor='black'  # Mengatur warna latar belakang menjadi hitam
+)
+
+# Menampilkan plot di Streamlit
+st.plotly_chart(fig)
+
+with st.expander("Penjelasan Radar Chart"):
+    st.write(
+        """
+        #### Karakteristik Kluster:
+
+        **Miripnya Karakteristik:** Semua klaster memiliki nilai yang rendah atau bahkan tidak ada pada variabel 'windspeed', 'hum', 'atemp', dan 'temp'. Hal ini menunjukkan bahwa variabel-variabel ini mungkin tidak memiliki pengaruh yang signifikan dalam membentuk klaster.
+
+        **Perbedaan dalam Jumlah Peminjaman:** Meskipun karakteristik dasar dari klaster cenderung mirip, terdapat perbedaan yang signifikan dalam jumlah peminjaman sepeda ('cnt'), baik secara total maupun terbagi antara peminjaman terdaftar ('registered') dan peminjaman tidak terdaftar ('casual').
+
+        #### Insight:
+
+        **Pengaruh Variabel Cuaca:** Karakteristik yang mirip pada variabel cuaca ('windspeed', 'hum', 'atemp', dan 'temp') menunjukkan bahwa faktor-faktor ini mungkin tidak memiliki peran yang dominan dalam pembentukan klaster. Hal ini bisa disebabkan oleh variasi yang rendah dari variabel cuaca di seluruh dataset.
+        
+        **Perbedaan dalam Jumlah Peminjaman:** Perbedaan yang signifikan dalam jumlah peminjaman antara klaster menunjukkan bahwa ada faktor-faktor lain di luar variabel cuaca yang mempengaruhi perilaku peminjaman sepeda. Hal ini bisa jadi disebabkan oleh faktor-faktor seperti lokasi, waktu, promosi, atau kebijakan penyewaan yang berbeda.
+        """
+    )
+st.markdown("---")
+
+# Kesimpulan
+st.markdown("### Kesimpulan")
+st.markdown(
+    """
+    <p style="text-align:justify; text-indent: 40px;">
+    Berdasarkan analisis radar chart dan perbandingan nilai variabel pada setiap klaster, 
+    dapat disimpulkan bahwa karakteristik cuaca, seperti kecepatan angin ('windspeed'), 
+    kelembaban udara ('hum'), suhu aktual ('atemp'), dan suhu ('temp'), cenderung memiliki pengaruh yang serupa 
+    di semua klaster. Hal ini menunjukkan bahwa faktor-faktor cuaca tersebut mungkin tidak menjadi faktor utama 
+    yang memengaruhi pola peminjaman sepeda. Namun, terdapat perbedaan signifikan dalam jumlah peminjaman sepeda
+    antara klaster. Klaster dengan jumlah peminjaman yang lebih tinggi, baik secara total maupun terbagi 
+    antara peminjaman terdaftar dan tidak terdaftar, menunjukkan bahwa ada faktor-faktor lain di luar cuaca 
+    yang memengaruhi perilaku peminjaman sepeda. Kemungkinan faktor-faktor seperti lokasi, waktu, promosi, 
+    atau kebijakan penyewaan yang berbeda dapat menjadi penjelasan atas perbedaan ini. Oleh karena itu, 
+    studi ini menunjukkan bahwa aspek-aspek lain selain cuaca dapat memiliki dampak yang signifikan terhadap 
+    tren peminjaman sepeda, dan analisis lebih lanjut diperlukan untuk memahami faktor-faktor tersebut dan 
+    bagaimana kontribusinya terhadap jumlah peminjaman sepeda.
+    </p>
+    """, unsafe_allow_html=True
+)

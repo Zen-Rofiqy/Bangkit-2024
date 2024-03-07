@@ -78,31 +78,44 @@ st.session_state["Date"] = Date
 # METADATA
 st.write("## Metadata")
 st.markdown("> 📷**Latarbelakang**")
-st.write(
+st.markdown(
     """
-    **_Bike sharing_** atau Sistem berbagi sepeda adalah generasi baru dari **penyewaan sepeda tradisional** di mana seluruh proses mulai dari **keanggotaan**, **penyewaan**, dan **pengembalian** sepeda menjadi **otomatis**. Melalui sistem ini, pengguna dapat dengan mudah menyewa sepeda dari posisi tertentu dan mengembalikannya di posisi lain. Saat ini, terdapat **lebih dari 500 program** berbagi sepeda di seluruh dunia yang terdiri dari **lebih dari 500k sepeda**. Saat ini, terdapat minat yang besar terhadap sistem ini karena peran penting mereka dalam masalah lalu lintas, lingkungan dan kesehatan. 
-
-    Terlepas dari aplikasi dunia nyata yang menarik dari sistem berbagi sepeda, **karakteristik data** yang dihasilkan oleh sistem ini membuatnya menarik untuk penelitian. Berbeda dengan layanan transportasi lain seperti bus atau kereta bawah tanah, **durasi perjalanan**, **posisi keberangkatan** dan **kedatangan secara eksplisit** dicatat dalam sistem ini. Fitur ini mengubah sistem berbagi sepeda menjadi **jaringan sensor virtual** yang dapat digunakan untuk merasakan mobilitas di kota. Dengan demikian, diharapkan sebagian besar kejadian penting di kota dapat dideteksi melalui pemantauan data ini.
-    """
+    <p style="text-align:justify; text-indent: 40px;">
+        <b>Bike sharing</b> atau Sistem berbagi sepeda adalah generasi baru dari <b>penyewaan sepeda tradisional</b> di mana seluruh proses mulai dari <b>keanggotaan</b>, <b>penyewaan</b>, dan <b>pengembalian</b> sepeda menjadi <b>otomatis</b>. Melalui sistem ini, pengguna dapat dengan mudah menyewa sepeda dari posisi tertentu dan mengembalikannya di posisi lain. Saat ini, terdapat <b>lebih dari 500 program</b> berbagi sepeda di seluruh dunia yang terdiri dari <b>lebih dari 500k sepeda</b>. Saat ini, terdapat minat yang besar terhadap sistem ini karena peran penting mereka dalam masalah lalu lintas, lingkungan dan kesehatan. 
+    </p>
+    <p style="text-align:justify; text-indent: 40px;">
+        Terlepas dari aplikasi dunia nyata yang menarik dari sistem berbagi sepeda, <b>karakteristik data</b> yang dihasilkan oleh sistem ini membuatnya menarik untuk penelitian. Berbeda dengan layanan transportasi lain seperti bus atau kereta bawah tanah, <b>durasi perjalanan</b>, <b>posisi keberangkatan</b> dan <b>kedatangan secara eksplisit</b> dicatat dalam sistem ini. Fitur ini mengubah sistem berbagi sepeda menjadi <b>jaringan sensor virtual</b> yang dapat digunakan untuk merasakan mobilitas di kota. Dengan demikian, diharapkan sebagian besar kejadian penting di kota dapat dideteksi melalui pemantauan data ini.
+    </p>
+    """, unsafe_allow_html=True
 )
 st.markdown("---")
 st.markdown("> 🧮**Data set**")
 st.write(
     """
-    Proses penyewaan sepeda bersama sangat **berkorelasi** dengan **kondisi lingkungan** dan **musim**. Misalnya, **kondisi cuaca**, **curah hujan**, **hari dalam seminggu**, **musim**, **jam dalam sehari**, dan lain-lain dapat mempengaruhi perilaku penyewaan. Kumpulan data inti terkait dengan catatan historis selama **dua tahun** yang berkaitan dengan tahun **2011** dan **2012** dari sistem Capital Bikeshare, Washington D.C., Amerika Serikat yang tersedia untuk umum di http://capitalbikeshare.com/system-data. Kami mengumpulkan data tersebut dalam dua basis data **per jam** dan **per hari**, kemudian mengekstrak dan menambahkan **informasi cuaca** dan **musim** yang sesuai. Informasi cuaca diambil dari http://www.freemeteo.com.
-    """
+    <p style="text-align:justify; text-indent: 40px;">
+        Proses penyewaan sepeda bersama sangat <b>berkorelasi</b> dengan <b>kondisi lingkungan</b> dan <b>musim</b>. Misalnya, <b>kondisi cuaca</b>, <b>curah hujan</b>, <b>hari dalam seminggu</b>, <b>musim</b>, <b>jam dalam sehari</b>, dan lain-lain dapat mempengaruhi perilaku penyewaan. Kumpulan data inti terkait dengan catatan historis selama <b>dua tahun</b> yang berkaitan dengan tahun <b>2011</b> dan <b>2012</b> dari sistem Capital Bikeshare, Washington D.C., Amerika Serikat yang tersedia untuk umum di <a href="http://capitalbikeshare.com/system-data" target="_blank">http://capitalbikeshare.com/system-data</a>. Kami mengumpulkan data tersebut dalam dua basis data <b>per jam</b> dan <b>per hari</b>, kemudian mengekstrak dan menambahkan <b>informasi cuaca</b> dan <b>musim</b> yang sesuai. Informasi cuaca diambil dari <a href="http://www.freemeteo.com" target="_blank">http://www.freemeteo.com</a>.
+    </p>
+    """, unsafe_allow_html=True
 )
 st.markdown("---")
 st.markdown("> 📝**Tugas terkait**")
 st.write(
     """
-    * **Regresi**:  
-        **Prediksi jumlah penyewaan sepeda** per jam atau per hari **berdasarkan pengaturan lingkungan dan musim**.
-        
-    * **Deteksi Peristiwa dan Anomali**:  
-        **Jumlah sepeda yang disewa** juga **berkorelasi** dengan beberapa **peristiwa di kota** yang dapat dengan mudah ditelusuri melalui mesin pencari.	Sebagai contoh, kueri seperti "2012-10-30 washington d.c." di Google mengembalikan hasil yang terkait dengan **Badai Sandy**. Beberapa peristiwa penting diidentifikasi dalam [1]. Oleh karena itu, data tersebut dapat digunakan untuk **validasi algoritma** **pendeteksi anomali atau kejadian**.
-    """
+    <ul>
+        <li><b>Regresi</b>:<br>
+            <p style="text-align:justify; text-indent: 40px;">
+                <b>Prediksi jumlah penyewaan sepeda</b> per jam atau per hari <b>berdasarkan pengaturan lingkungan dan musim</b>.
+            </p>
+        </li>
+        <li><b>Deteksi Peristiwa dan Anomali</b>:<br>
+            <p style="text-align:justify; text-indent: 40px;">
+                <b>Jumlah sepeda yang disewa</b> juga <b>berkorelasi</b> dengan beberapa <b>peristiwa di kota</b> yang dapat dengan mudah ditelusuri melalui mesin pencari. Sebagai contoh, kueri seperti "2012-10-30 washington d.c." di Google mengembalikan hasil yang terkait dengan <b>Badai Sandy</b>. Beberapa peristiwa penting diidentifikasi dalam <a href="[1]" target="_blank">[1]</a>. Oleh karena itu, data tersebut dapat digunakan untuk <b>validasi algoritma</b> <b>pendeteksi anomali atau kejadian</b>.
+            </p>
+        </li>
+    </ul>
+    """, unsafe_allow_html=True
 )
+st.caption("Mohon maaf sebelumnya, untuk poin 2 saya rasa saya blm mampu untuk mengerjakannya🙏 sekarang.")
 st.markdown("---")
 st.markdown("> 📚**Karakteristik Dataset**")
 st.write(
