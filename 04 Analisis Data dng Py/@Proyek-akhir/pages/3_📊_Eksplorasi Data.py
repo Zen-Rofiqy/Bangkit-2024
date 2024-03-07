@@ -241,10 +241,25 @@ plt.show()
 # Tampilkan plot pada Streamlit
 plt1 = plt.gcf()
 st.pyplot(plt1)
-st.caption(
-   """
-   """
-)
+
+with st.expander("Summary"):
+    st.markdown(
+    '''
+    Berdasarkan analisis grafik yang diberikan, beberapa insight penting yang dapat diambil adalah:
+
+    1. Cuaca cerah memiliki tren penyewaan sepeda tertinggi di setiap musim, terutama pada musim gugur dan semi. Ini mengindikasikan bahwa kondisi cuaca cerah mendorong minat masyarakat untuk menyewa sepeda. Oleh karena itu, perusahaan penyewaan sepeda perlu mempersiapkan stok sepeda yang memadai pada musim-musim tersebut.
+
+    2. Pada musim dingin, cuaca cerah dan berkabut memiliki tren penyewaan sepeda yang cukup tinggi, meskipun lebih rendah daripada musim lainnya. Ini menunjukkan bahwa masyarakat masih memiliki minat untuk menyewa sepeda pada musim dingin, terutama pada cuaca cerah dan berkabut. Perusahaan penyewaan sepeda dapat mempertimbangkan untuk menyediakan layanan khusus atau promosi pada musim dingin untuk meningkatkan penyewaan.
+
+    3. Cuaca salju ringan memiliki tren penyewaan sepeda yang sangat rendah di setiap musim. Ini mengindikasikan bahwa masyarakat cenderung tidak menyewa sepeda pada saat cuaca salju ringan. Perusahaan penyewaan sepeda dapat mempertimbangkan untuk mengurangi jumlah sepeda yang tersedia atau bahkan menghentikan operasi sementara pada saat cuaca salju ringan untuk menghemat biaya operasional.
+
+    4. Tren penyewaan sepeda pada musim gugur dan panas cenderung lebih tinggi daripada musim lainnya, terutama pada cuaca cerah. Ini menunjukkan bahwa masyarakat lebih tertarik untuk menyewa sepeda pada musim-musim tersebut. Perusahaan penyewaan sepeda perlu mempersiapkan strategi pemasaran dan operasional yang sesuai untuk memenuhi permintaan yang tinggi pada musim-musim tersebut.
+
+    5. Secara umum, kondisi cuaca cerah dan musim yang sejuk (semi dan gugur) menjadi faktor pendorong utama dalam tren penyewaan sepeda. Perusahaan penyewaan sepeda perlu memperhatikan pola ini dan mengoptimalkan layanan serta sumber daya mereka sesuai dengan kondisi lingkungan dan musim.
+
+    Insight-insight ini dapat membantu perusahaan penyewaan sepeda dalam menganalisis pengaruh kondisi lingkungan dan musim terhadap tren penyewaan sepeda, serta mengembangkan strategi yang tepat untuk meningkatkan efisiensi operasional dan memenuhi permintaan pelanggan secara optimal.
+    '''
+    )
 
 
 st.markdown("---")
@@ -264,7 +279,7 @@ plt1 = plt.gcf()
 st.pyplot(plt1)
 
 # Interpretasi
-if st.button("Interpretasi 1"):   
+with st.expander("Interpretasi"):
     st.write("Meskipun terjadi fluktuasi, data deret waktu menunjukkan adanya kecenderungan peningkatan jumlah total sepeda yang disewakan seiring berjalannya waktu dari tahun 2011 hingga 2012. Hal ini mengindikasikan adanya pertumbuhan atau peningkatan permintaan terhadap layanan sewa sepeda selama periode tersebut, yang mungkin dapat menjadi peluang untuk pengembangan layanan di masa depan.")
 
 # Matriks Korelasi 
@@ -311,7 +326,7 @@ def cor_matrix(df):
 st.pyplot(cor_matrix(df))
 
 # Interpretasi
-if st.button("Interpretasi 2"):   
+with st.expander("Interpretasi"):
     st.write(
        """
         * *Keterkaitan antara Variabel Registered dan Total Sepeda Disewakan:* 
