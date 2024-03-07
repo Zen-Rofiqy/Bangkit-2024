@@ -15,13 +15,15 @@ import sys
 import io
 from babel.numbers import format_currency
 import matplotlib.dates as mdates
-from PIL import Image
+from PIL import Image, ImageOps, ImageDraw
+import requests
+from io import BytesIO
 from sklearn.preprocessing import StandardScaler
 import plotly.graph_objects as go
 
 # Setting
 st.set_page_config(
-    page_title="Bikeshare",
+    page_title="BikeShare",
     page_icon="🚲",
 )
 
@@ -40,7 +42,6 @@ def count(dates) :
     return sumcount
 
 # Sidebar
-st.sidebar.success("Select a page above.")
 with st.sidebar:       
     start, end = st.date_input(
         label='Tanggal',
@@ -48,6 +49,46 @@ with st.sidebar:
         max_value=max_date,
         value=[min_date, max_date]
     )
+st.sidebar.markdown("<h1 style='text-align: center; color: white;'>Zen Rofiqy</h1>", unsafe_allow_html=True)
+# Mengambil gambar dari URL
+image_url = "https://avatars.githubusercontent.com/u/114891856?v=4"
+response = requests.get(image_url)
+image = Image.open(BytesIO(response.content))
+
+# Mendapatkan resolusi asli gambar
+original_width, original_height = image.size
+
+# Mengatur ukuran baru untuk gambar
+new_width = 500
+new_height = 500
+
+# Mengubah ukuran gambar tanpa mengubah resolusi
+image = image.resize((new_width, new_height), resample=Image.LANCZOS)
+
+# Membuat gambar menjadi bulat
+mask = Image.new('L', (new_width, new_height), 0)
+draw = ImageDraw.Draw(mask)
+draw.ellipse((0, 0, new_width, new_height), fill=255)
+image = ImageOps.fit(image, mask.size, centering=(0.5, 0.5))
+image.putalpha(mask)
+
+# Menampilkan gambar di sidebar
+st.sidebar.image(image, use_column_width=True)
+st.sidebar.markdown(
+    """
+    <div>
+        <p style="text-align:justify; text-indent: 50px;">
+            <span>&#128279; GitHub: <a href="https://github.com/Zen-Rofiqy" target="_blank">Zen-Rofiqy</a></span>
+        </p>
+    </div>
+    <div>
+        <p style="text-align:justify; text-indent: 50px;">
+            <span>&#128279; Rpubs: <a href="https://rpubs.com/ZenR_Prog/" target="_blank">ZenR_Prog</a></span>
+        </p>
+    </div>
+    """,
+    unsafe_allow_html=True
+)
 
 # Data
 st.write(
@@ -65,7 +106,7 @@ st.caption(
 )
 
 #Dummy
-dw_dummy = pd.get_dummies(dw_df.drop(['dteday', 'instant'], axis=1), drop_first=True)
+dw_dummy = pd.get_dummies(dw_df.drop(['dteday', 'instant'], axis=1), drop_first=True).astype(float)
 
 with st.expander("Hasil Dummy Variable"):
     st.dataframe(dw_dummy)  
