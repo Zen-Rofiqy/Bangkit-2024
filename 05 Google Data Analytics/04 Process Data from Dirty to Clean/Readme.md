@@ -14,3 +14,5 @@
 
 3. [checkmarket](https://www.checkmarket.com/sample-size-calculator/#sample-size-margin-of-error-calculator)
 
+## Cleaning Data
+[Global Logistics Association - Data to Merge](https://docs.google.com/spreadsheets/d/1xJganjGfI3FrHg04tip8vxr_ylDjEIf9Tn2TcxLJbrk/edit#gid=1764281342)
