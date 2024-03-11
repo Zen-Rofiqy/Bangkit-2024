@@ -313,11 +313,17 @@ st.subheader('Sepeda yang Disewa pada Hari Libur dan Hari Kerja')
 col1, col2= st.columns(2)
 with col1:
     st.markdown("**Banyaknya Hari kerja dan Hari libur**")
-    # Menghitung jumlah hari libur & weekend
-    holiday_weekend_count = dw_df[(dw_df['holiday'] == 'Libur') & (dw_df['workingday'] == 'WeekEnd')].shape[0] + dw_df[(dw_df['holiday'] == '-') & (dw_df['workingday'] == 'WeekEnd')].shape[0]
+    
+    # Streamlit cloud ada masalha dalam operasi bool
+    # Encoding bool jadi 0 1 dan jadikan float
+    dw_df['holiday_encoded'] = dw_df['holiday'].replace({'Libur': 1, '-': 0}).astype(float)
+    dw_df['workingday_encoded'] = dw_df['workingday'].replace({'WeekEnd': 1, 'WeekDay': 0}).astype(float)
 
+    # Menghitung jumlah hari libur & weekend
+    holiday_weekend_count = dw_df[(dw_df['holiday_encoded'] == 1) & (dw_df['workingday_encoded'] == 1)].shape[0]
+    
     # Menghitung jumlah hari kerja/weekday
-    weekday_count = dw_df[(dw_df['holiday'] == '-') & (dw_df['workingday'] == 'WeekDay')].shape[0] + dw_df[(dw_df['holiday'] == 'Libur') & (dw_df['workingday'] == 'WeekDay')].shape[0]
+    weekday_count = dw_df[(dw_df['holiday_encoded'] == 0) & (dw_df['workingday_encoded'] == 0)].shape[0]
 
     # Membuat Pie Chart
     fig, ax = plt.subplots(figsize=(8, 8))
@@ -327,8 +333,12 @@ with col1:
     sizes = [holiday_weekend_count, weekday_count]
     colors = ['#dddddd', '#1380A1']
 
-    # Menampilkan pie chart
-    wedges, texts, autotexts = ax.pie(sizes, labels=labels, colors=colors, autopct='%1.1f%%', startangle=90)
+    # Pengecekan nilai sizes
+    if sum(sizes) == 0:
+        st.warning("Tidak ada data untuk ditampilkan.")
+    else:
+        # Menampilkan pie chart
+        wedges, texts, autotexts = ax.pie(sizes, labels=labels, colors=colors, autopct='%1.1f%%', startangle=90)
 
     # Menambahkan frekuensi di sebelah label
     for i, label in enumerate(labels):
@@ -362,8 +372,12 @@ with col2:
     sizes = [holiday_weekend / holiday_weekend_count, weekday_weekend / weekday_count]
     colors = ['#dddddd', '#1380A1']
 
-    # Menampilkan pie chart
-    wedges, texts, autotexts = ax.pie(sizes, labels=labels, colors=colors, autopct='%1.1f%%', startangle=90)
+    # Pengecekan nilai sizes
+    if any(size < 0 for size in sizes):
+        st.warning("Nilai negatif tidak valid untuk membuat pie chart.")
+    else:
+        # Menampilkan pie chart
+        wedges, texts, autotexts = ax.pie(sizes, labels=labels, colors=colors, autopct='%1.1f%%', startangle=90)
 
     # Menambahkan frekuensi di sebelah label
     for i, label in enumerate(labels):
@@ -480,7 +494,7 @@ with st.expander("Insight pola penyewaan sepeda"):
 # Matriks Korelasi 
 st.write("\n\n")
 st.subheader('Matriks Korelasi')
-df = dw_df.iloc[:, -7:]
+df = dw_df.iloc[:, 10:16]
 
 # Plot heatmap
 def corrfunc(x, y, **kws):
