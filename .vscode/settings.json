@@ -7,14 +7,6 @@
             "previewLimit": 50,
             "driver": "BigQuery",
             "projectId": "my-first-project-417404"
-        },
-        {
-            "name": "BigQuery-",
-            "authenticator": "CLI",
-            "location": "us",
-            "previewLimit": 50,
-            "driver": "BigQuery",
-            "projectId": "my-first-project-417404"
         }
     ],
     "sqltools.useNodeRuntime": true
