@@ -30,6 +30,7 @@
     
     Welldone! now try again the test connection in SQLTools, it should successfully connect.
 */
+-- Run a large query
 -- @block
 SELECT
   language,
@@ -45,5 +46,20 @@ GROUP BY
 ORDER BY
   views DESC;
 
+-- Run a larger query
 -- @block
+SELECT
+  language,
+  title,
+  SUM(views) AS views
+FROM
+  `bigquery-samples.wikipedia_benchmark.Wiki100B`
+WHERE
+  title LIKE '%Google%'
+GROUP BY
+  language,
+  title
+ORDER BY
+  views DESC;
 
+--
