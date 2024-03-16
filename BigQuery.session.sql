@@ -25,8 +25,10 @@
     2. Locate your downloaded JSON file, then run this in your vscode cmd :
         set GOOGLE_APPLICATION_CREDENTIALS="C:\Users\Fathan\Documents\Obsidian Vault\2. Kuliah\Smt 6\@ Bangkit 2024\05 Google Data Analytics\04 Process Data from Dirty to Clean\ILT ML 02\my-first-project-417404-5e004b0cd9d6.json"
         Note: Change the path with your own path
+        to see if this was run successfully you can try to run this in you vscode cmd :
+        `echo %GOOGLE_APPLICATION_CREDENTIALS%`
     
-    
+    Welldone! now try again the test connection in SQLTools, it should successfully connect.
 */
 -- @block
 SELECT
