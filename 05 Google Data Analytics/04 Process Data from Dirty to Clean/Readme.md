@@ -41,4 +41,8 @@
 
 10. [VLOOKUP in Action Example](https://docs.google.com/spreadsheets/d/1f39uwSgf7N-bgc5GMAtaSefUPw0EIaAB4eKau7t0SXU/template/preview?resourcekey=0-fTi9xv6oG-88MRHHfVkHGQ)
 
-11. [VLOOKUP Practice Sheet](https://docs.google.com/spreadsheets/d/1Js6kRVYy6Nx6VENibaX9dmNOAP_7CXWuOqUjUz9cBtA/template/preview) 
+11. [VLOOKUP Practice Sheet](https://docs.google.com/spreadsheets/d/1Js6kRVYy6Nx6VENibaX9dmNOAP_7CXWuOqUjUz9cBtA/template/preview)
+
+12. [Discount-Variety-Store-433-Monthly-Sales](https://docs.google.com/spreadsheets/d/1lwz8hk7fBRMMgOG-Kk34JnBWSh2yEQ5aN8iJ--pb54Q/template/preview)
+
+13. 
