@@ -6,17 +6,14 @@
 -- FROM
 --   your project name.cars.car_info
 -- LIMIT 1000
+
 SELECT DISTINCT fuel_type
 FROM cars.car_info
 LIMIT 1000;
+-- so yea, just delete the "your project name."
 
 -- Inspect the length column
 -- @block
--- SELECT
---     MIN(length) AS min_length,
---     MAX(length) AS max_length
--- FROM
---     you project name.cars.car_info;
 SELECT
     MIN(length) AS min_length,
     MAX(length) AS max_length
@@ -25,12 +22,6 @@ FROM
 
 -- Fill in missing data
 -- @block
--- SELECT
---   *
--- FROM
---   your project name.cars.car_info 
--- WHERE 
---   num_of_doors IS NULL;
 SELECT
   *
 FROM
