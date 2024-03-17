@@ -47,4 +47,6 @@
 
 13. [Working with Conditions](https://docs.google.com/spreadsheets/d/1sKNqBzV63Na76jjoKLukjTtDyDMwVW0Vjz4mM-sJDEM/template/preview#gid=895883562)
 
-14. 
+14. [KP Kitchen Supplies, Profit](https://docs.google.com/spreadsheets/d/1tew5mVmK-wkAxJVzS2nZul6IJvK4tdbDfm3IjJfVWsE/template/preview)
+
+15. 
