@@ -20,6 +20,7 @@
 ## Resume
 1. [Template 1](https://docs.google.com/document/d/1qn_zOg-0E7pca6bEk6BGIEBNBuIZdiPnwOTKm76Q-jA/template/preview)
 2. [Template 2](https://docs.google.com/document/d/1l-aMPMNRxZ0zSOQcNGg4jMqQO5FW1coZiV2m7jz6CFw/template/preview)
+3. [Example](https://docs.google.com/document/d/1fea0Yzldlr1eMf5eZ9aWRTeeVP0-ZS5h7DMqXt__6Mg/template/preview)
 
 ## Datasets
 1. [Global Logistics Association - Data to Merge](https://docs.google.com/spreadsheets/d/1xJganjGfI3FrHg04tip8vxr_ylDjEIf9Tn2TcxLJbrk/edit#gid=1764281342)
