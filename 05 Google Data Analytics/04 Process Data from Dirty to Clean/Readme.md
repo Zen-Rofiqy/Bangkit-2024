@@ -45,4 +45,6 @@
 
 12. [Discount-Variety-Store-433-Monthly-Sales](https://docs.google.com/spreadsheets/d/1lwz8hk7fBRMMgOG-Kk34JnBWSh2yEQ5aN8iJ--pb54Q/template/preview)
 
-13. 
+13. [Working with Conditions](https://docs.google.com/spreadsheets/d/1sKNqBzV63Na76jjoKLukjTtDyDMwVW0Vjz4mM-sJDEM/template/preview#gid=895883562)
+
+14. 
