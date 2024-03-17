@@ -38,4 +38,7 @@
 8. [Dataset for Project: CONCAT function](https://docs.google.com/spreadsheets/d/1Na9M4xb-3CA746BHECX75n3B9V04pxLo0xNs9i8jMNo/template/preview)
 
 9. [Converting numerical and text values - Preparing for VLOOKUP](https://docs.google.com/spreadsheets/d/1EGwjKtU3594CPiOfHYIgYbPcEf1r-33MDVblUdDtglE/template/preview?resourcekey=0-VqjIc9-RS8nN7pkK0NVKLQ#gid=0)
+
 10. [VLOOKUP in Action Example](https://docs.google.com/spreadsheets/d/1f39uwSgf7N-bgc5GMAtaSefUPw0EIaAB4eKau7t0SXU/template/preview?resourcekey=0-fTi9xv6oG-88MRHHfVkHGQ)
+
+11. [VLOOKUP Practice Sheet](https://docs.google.com/spreadsheets/d/1Js6kRVYy6Nx6VENibaX9dmNOAP_7CXWuOqUjUz9cBtA/template/preview) 
