@@ -17,8 +17,8 @@
             "server": "localhost",
             "port": 3306,
             "driver": "MySQL",
-            "name": "Rofiqy's Bangkit 2024",
-            "database": "cars",
+            "name": "nyc_weather",
+            "database": "nyc_weather",
             "username": "zen-rofiqy"
         },
         {
@@ -30,8 +30,8 @@
             "server": "localhost",
             "port": 3306,
             "driver": "MySQL",
-            "name": "nyc_weather",
-            "database": "nyc_weather",
+            "name": "cars",
+            "database": "cars",
             "username": "zen-rofiqy"
         }
     ],

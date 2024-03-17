@@ -36,4 +36,9 @@ ORDER BY
 -- * Disconnect from BigQuery and Connect to MySQL server in SQL tools to show the saved data
 -- Make sure you already have connection to nyc_weather
 -- @block
-SELECT * FROM weather_data;
+SELECT
+    AVG(temperature)
+FROM
+    weather_data  
+WHERE
+    date BETWEEN '2020-06-01' AND '2020-06-30'
