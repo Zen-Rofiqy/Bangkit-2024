@@ -1,5 +1,4 @@
-
--- Inspect the fuel_typ column
+-- ! Inspect the fuel_typ column
 -- @block
 -- SELECT
 --   DISTINCT fuel_type
@@ -12,7 +11,7 @@ FROM cars.car_info
 LIMIT 1000;
 -- so yea, just delete the "your project name."
 
--- Inspect the length column
+-- ! Inspect the length column
 -- @block
 SELECT
     MIN(length) AS min_length,
@@ -20,7 +19,7 @@ SELECT
 FROM
     cars.car_info;
 
--- Fill in missing data
+-- ! Fill in missing data
 -- @block
 SELECT
   *
@@ -28,10 +27,6 @@ FROM
   cars.car_info 
 WHERE
   num_of_doors IS NULL;
-
--- @block
-SELECT num_of_doors
-FROM cars.car_info;
 -- yea weird no missing value here
 
 -- @block
@@ -64,5 +59,33 @@ SELECT *
 FROM cars.car_info
 WHERE TRIM(num_of_doors) = '';
 
+-- ! Identify potential errors
+-- @block
+SELECT
+  DISTINCT num_of_cylinders
+FROM
+  cars.car_info;
 
+-- * correct the misspelling
+-- @block
+UPDATE
+  cars.car_info
+SET
+  num_of_cylinders = "two"
+WHERE
+  num_of_cylinders = "tow";
 
+-- @block
+SELECT
+  DISTINCT num_of_cylinders
+FROM
+  cars.car_info;
+
+-- * check the compression_ratio
+-- @block
+SELECT
+  MIN(compression_ratio) AS min_compression_ratio,
+  MAX(compression_ratio) AS max_compression_ratio
+FROM
+  cars.car_info;
+-- the maximum value in this column should be 23, not 70
