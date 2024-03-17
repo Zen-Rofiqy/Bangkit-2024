@@ -29,6 +29,7 @@ ORDER BY
 -- @block
 USE nyc_weather; -- Connect to MySQL database/schema
 
+DROP TABLE IF EXISTS weather_data;
 CREATE TABLE weather_data (
     stn VARCHAR(10),
     date DATE,
@@ -37,6 +38,21 @@ CREATE TABLE weather_data (
     precipitation FLOAT
 );
 
+-- * Insert data into the table
+-- @block
+INSERT INTO weather_data (stn, date, temperature, wind_speed, precipitation)
+SELECT
+ stn,
+ date,
+ IF(temp = 9999.9, NULL, temp) AS temperature,
+ IF(wdsp = "999.9", NULL, CAST(wdsp AS FLOAT)) AS wind_speed,
+ IF(prcp = 99.99, 0, prcp) AS precipitation
+FROM
+ `bigquery-public-data.noaa_gsod.gsod2020`
+WHERE
+ stn IN ("725030", "744860")
+ORDER BY
+ date DESC, stn ASC;
 
 
 
