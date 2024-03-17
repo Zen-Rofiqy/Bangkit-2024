@@ -14,8 +14,10 @@
 
 3. [checkmarket](https://www.checkmarket.com/sample-size-calculator/#sample-size-margin-of-error-calculator)
 
-## Cleaning Data
-### Datasets
+## Github
+1. [Creating a changelog](https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax)
+
+## Datasets
 1. [Global Logistics Association - Data to Merge](https://docs.google.com/spreadsheets/d/1xJganjGfI3FrHg04tip8vxr_ylDjEIf9Tn2TcxLJbrk/edit#gid=1764281342)
 
 2. [International Logistics Association Memberships - Data for Cleaning](https://docs.google.com/spreadsheets/d/1B-HcoupS8XvKRW-twqseHr8CMJVBUrTxmzycLwru5MY/edit#gid=1764281342)
