@@ -20,6 +20,19 @@
             "name": "Rofiqy's Bangkit 2024",
             "database": "cars",
             "username": "zen-rofiqy"
+        },
+        {
+            "mysqlOptions": {
+                "authProtocol": "default",
+                "enableSsl": "Disabled"
+            },
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 3306,
+            "driver": "MySQL",
+            "name": "nyc_weather",
+            "database": "nyc_weather",
+            "username": "zen-rofiqy"
         }
     ],
     "sqltools.useNodeRuntime": true

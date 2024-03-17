@@ -1,4 +1,5 @@
 -- ! Query the data
+-- Connect to BigQuery server in SQLTools
 -- @block
 SELECT
   stn,
@@ -25,44 +26,14 @@ ORDER BY
   stn ASC
 
 -- ! Save a new table
--- * Save to MySql (Must create `nyc_weather` schema first)
--- @block
-USE nyc_weather; -- Connect to MySQL database/schema
-
-DROP TABLE IF EXISTS weather_data;
-CREATE TABLE weather_data (
-    stn VARCHAR(10),
-    date DATE,
-    temperature FLOAT,
-    wind_speed FLOAT,
-    precipitation FLOAT
-);
-
--- * Insert data into the table
--- @block
-INSERT INTO weather_data (stn, date, temperature, wind_speed, precipitation)
-SELECT
- stn,
- date,
- IF(temp = 9999.9, NULL, temp) AS temperature,
- IF(wdsp = "999.9", NULL, CAST(wdsp AS FLOAT)) AS wind_speed,
- IF(prcp = 99.99, 0, prcp) AS precipitation
-FROM
- `bigquery-public-data.noaa_gsod.gsod2020`
-WHERE
- stn IN ("725030", "744860")
-ORDER BY
- date DESC, stn ASC;
-
-
-
-
+/* 1. to save it, just right click on the outputn, then save result as csv
+   2. if you want to create the database, just create it in MySQL.
+      Here, I'm gonna create `nyc_weather` schema
+   3. Don't forget to add the table by import
+*/
 
 -- ! Query the new table
+-- * Disconnect from BigQuery and Connect to MySQL server in SQL tools to show the saved data
+-- Make sure you already have connection to nyc_weather
 -- @block
-SELECT
-    AVG(temperature)
-FROM
-    `your_project_name.demos.nyc_weather`  
-WHERE
-    date BETWEEN '2020-06-01' AND '2020-06-30'
+SELECT * FROM weather_data;
