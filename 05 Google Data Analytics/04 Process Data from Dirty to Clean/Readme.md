@@ -23,3 +23,5 @@
 3. [Cosmetics Inc. - Data for Cleaning](https://docs.google.com/spreadsheets/d/1LSITQLjcHxL2XUY9PoFnOuwVGiyn33ez6sdSWEDPX9U/edit#gid=0)
 
 4. [Global Logistics Association - Data for CONCATENATE](https://docs.google.com/spreadsheets/d/1nPX8kHdOnQqyDK-w7gZnFv3KWkMPK1NaR-2AvwxuEdI/edit#gid=1764281342)
+   
+6. [Jeff's Party Planet - Data for Cleaning](https://docs.google.com/spreadsheets/d/1RaDdSEp2V6D09FE6LOFkiJGv9CMT83GIV_U9YnY2rvI/template/preview?resourcekey=0-IU2-k90CX0mrt0ebwrvwDw#gid=0)
