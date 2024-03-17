@@ -17,6 +17,10 @@
 ## Github
 1. [Creating a changelog](https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax)
 
+## Resume
+1. [Template 1](https://docs.google.com/document/d/1qn_zOg-0E7pca6bEk6BGIEBNBuIZdiPnwOTKm76Q-jA/template/preview)
+2. [Template 2](https://docs.google.com/document/d/1l-aMPMNRxZ0zSOQcNGg4jMqQO5FW1coZiV2m7jz6CFw/template/preview)
+
 ## Datasets
 1. [Global Logistics Association - Data to Merge](https://docs.google.com/spreadsheets/d/1xJganjGfI3FrHg04tip8vxr_ylDjEIf9Tn2TcxLJbrk/edit#gid=1764281342)
 
