@@ -1,4 +1,5 @@
-/*  1. connect with SQLTools
+/*  How to SQLTools : "https://youtu.be/9ADd-_mM5Dw?si=XvYxrq-iWub91kof"
+    1. connect with SQLTools
     2. search BigQuery, (install the extention first)
     3. In Authenticator*, select GCloud CLI
     4. In Project ID*, get your BigQuery sandbox ID (https://cloud.google.com/bigquery/docs/sandbox)

@@ -7,6 +7,19 @@
             "previewLimit": 50,
             "driver": "BigQuery",
             "projectId": "my-first-project-417404"
+        },
+        {
+            "mysqlOptions": {
+                "authProtocol": "default",
+                "enableSsl": "Disabled"
+            },
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 3306,
+            "driver": "MySQL",
+            "name": "Rofiqy's Bangkit 2024",
+            "database": "cars",
+            "username": "zen-rofiqy"
         }
     ],
     "sqltools.useNodeRuntime": true

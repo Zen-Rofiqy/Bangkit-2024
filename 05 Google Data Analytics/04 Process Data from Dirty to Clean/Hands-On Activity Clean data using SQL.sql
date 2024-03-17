@@ -1,7 +1,24 @@
 
+-- Inspect the fuel_typ column
 -- @block
-ATTACH DATABASE 'C:/Users/Fathan/Documents/Obsidian Vault/2. Kuliah/Smt 6/@ Bangkit 2024/05 Google Data Analytics/04 Process Data from Dirty to Clean/cars.db' AS cars;
+-- SELECT
+--   DISTINCT fuel_type
+-- FROM
+--   your project name.cars.car_info
+-- LIMIT 1000
+SELECT DISTINCT fuel_type
+FROM cars.car_info
+LIMIT 1000;
 
-CREATE TABLE cars.car_info AS
-SELECT *
-FROM csv.`C:/Users/Fathan/Documents/Obsidian Vault/2. Kuliah/Smt 6/@ Bangkit 2024/05 Google Data Analytics/04 Process Data from Dirty to Clean/automobile_data.csv`;
+-- Inspect the length column
+-- @block
+-- SELECT
+--     MIN(length) AS min_length,
+--     MAX(length) AS max_length
+-- FROM
+--     you project name.cars.car_info;
+SELECT
+    MIN(length) AS min_length,
+    MAX(length) AS max_length
+FROM
+    cars.car_info;
