@@ -122,3 +122,30 @@ SELECT
   DISTINCT drive_wheels
 FROM
   cars.car_info;
+
+-- * check how the freq
+-- @block
+SELECT
+  DISTINCT drive_wheels,
+  LENGTH(drive_wheels) AS string_length
+FROM
+  cars.car_info;
+
+-- * Update the data
+-- @block
+UPDATE
+  cars.car_info
+SET
+  drive_wheels = TRIM(drive_wheels)
+WHERE TRUE;
+
+-- * check again
+-- @block
+SELECT
+  DISTINCT drive_wheels
+FROM
+  cars.car_info;
+
+-- ! Q1
+-- @block
+SELECT MAX(price) FROM cars.car_info;
