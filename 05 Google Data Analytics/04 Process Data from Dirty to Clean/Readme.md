@@ -36,3 +36,5 @@
 7. [Project Spreadsheet - for Data Validation](https://docs.google.com/spreadsheets/d/1ickWmdIkqf_X4yISh6F9vt6P5jj6bjc8-z3_mxJ3Axo/template/preview#gid=1265595766)
 
 8. [Dataset for Project: CONCAT function](https://docs.google.com/spreadsheets/d/1Na9M4xb-3CA746BHECX75n3B9V04pxLo0xNs9i8jMNo/template/preview)
+
+9. [Converting numerical and text values - Preparing for VLOOKUP](https://docs.google.com/spreadsheets/d/1EGwjKtU3594CPiOfHYIgYbPcEf1r-33MDVblUdDtglE/template/preview?resourcekey=0-VqjIc9-RS8nN7pkK0NVKLQ#gid=0)
