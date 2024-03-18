@@ -1,3 +1,6 @@
+## Tableau
+1. [Export](https://help.tableau.com/current/api/js_api/en-us/JavaScriptAPI/js_api_sample_export_to_pdf.htm)
+
 ## Dataset
 1. [Making your own visualization - example dataset](https://docs.google.com/spreadsheets/d/1Zhm9WyrM4dmBav9Vc1VnCU82vLlESEaJGFgNcfTRsZk/template/preview)
 
