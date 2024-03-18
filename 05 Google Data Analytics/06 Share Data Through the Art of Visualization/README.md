@@ -1,6 +1,9 @@
 ## Tableau
 1. [Export](https://help.tableau.com/current/api/js_api/en-us/JavaScriptAPI/js_api_sample_export_to_pdf.htm)
 
+## PPT
+1. [Demystifying Value Presentation](https://docs.google.com/presentation/d/1jyZeBt2PizsVU4KdODvzAnUbcz7CIOq6Udvp0d5_jKs/template/preview?resourcekey=0-2M-Yk3_73NwAVg-PaLfvVA)
+
 ## Youtube
 1. [The 3 Bones of Networking for Student Success](https://www.youtube.com/watch?v=4OTPJZnBP8s&themeRefresh=1)
 
