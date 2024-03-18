@@ -1,6 +1,13 @@
 ## Tableau
 1. [Export](https://help.tableau.com/current/api/js_api/en-us/JavaScriptAPI/js_api_sample_export_to_pdf.htm)
 
+## Youtube
+1. [The 3 Bones of Networking for Student Success](https://www.youtube.com/watch?v=4OTPJZnBP8s&themeRefresh=1)
+
+2. [Grit: the power of passion and perseverance ](https://youtu.be/H14bBuluwB8?si=1BFl8R6lHMh5tkSn)
+
+3. [Looking for a job? Highlight your ability, not your experience](https://youtu.be/guXxy8LH2QM?si=yG8LgnxnrpEzQZoS)
+
 ## Dataset
 1. [Making your own visualization - example dataset](https://docs.google.com/spreadsheets/d/1Zhm9WyrM4dmBav9Vc1VnCU82vLlESEaJGFgNcfTRsZk/template/preview)
 
