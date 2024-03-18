@@ -14,4 +14,6 @@
 
 6. [Customer-service-survey-responses](https://docs.google.com/spreadsheets/d/1DWIKPvtci3Gq6Qbz15SjjY6l4wbc_4I-CpVaFDPneDA/template/preview?resourcekey=0-OOpDEJqur_5qsHXNIt2Bqg)
 
-7. 
+7. [Cosmetics Inc.](https://docs.google.com/spreadsheets/d/1qaSKSyfvXz3Zsu_RU7abK-eNScSyGSe2oXT1KgiaMXI/template/preview)
+
+8. 
