@@ -1,137 +1,76 @@
+# -*- coding: utf-8 -*-
+# +
+import matplotlib.pyplot as plt
+import seaborn as sns
 import numpy as np
 import pandas as pd
-import os
-import matplotlib.pyplot as plt
-from IPython.display import display
-import ipywidgets as widgets
-from ipywidgets import interact,HBox, VBox
-import matplotlib.gridspec as gridspec
+from sklearn.inspection import permutation_importance
 
-df_anscombe = pd.read_csv('df_anscombe.csv')
-df_datasaurus = pd.read_csv("datasaurus.csv")
 
-def plot_anscombes_quartet():
-    fig, axs = plt.subplots(2,2, figsize = (8,5), tight_layout = True)
-    i = 1
-    fig.suptitle("Anscombe's quartet", fontsize = 16)
-    for line in axs:
-        for ax in line:
-            ax.scatter(df_anscombe[df_anscombe.group == i]['x'],df_anscombe[df_anscombe.group == i]['y'])
-            ax.set_title(f'Group {i}')
-            ax.set_ylim(2,15)
-            ax.set_xlim(0,21)
-            ax.set_xlabel('x')
-            ax.set_ylabel('y')
-            i+=1
-        
-def display_widget():
+FONT_SIZE_TICKS = 14
+FONT_SIZE_TITLE = 20
+FONT_SIZE_AXES = 16
 
-    dropdown_graph_1 = widgets.Dropdown(
-    options=df_datasaurus.group.unique(),
-    value='dino',
-    description='Data set 1: ',
-    disabled=False,
-)
+
+def calculate_feature_importance(features, lr, X_test, y_test):
+    if len(features) > 1:
+        bunch = permutation_importance(
+            lr, X_test, y_test, n_repeats=10, random_state=42
+        )
+        imp_means = bunch.importances_mean
+        ordered_imp_means_args = np.argsort(imp_means)[::-1]
+
+        results = {}
+        for i in ordered_imp_means_args:
+            name = list(X_test.columns)[i]
+            imp_score = imp_means[i]
+            results.update({name: [imp_score]})
+
+        most_important = list(X_test.columns)[ordered_imp_means_args[0]]
+        results_df = pd.DataFrame.from_dict(results)
+
+        return most_important, results_df
     
-    statistics_graph_1 = widgets.Button(
-    value=False,
-    description='Compute stats',
-    disabled=False,
-    button_style='',
-    tooltip='Description',
-    icon='' 
-)
+    else:
+        return features[0], None
 
-    dropdown_graph_2 = widgets.Dropdown(
-    options=df_datasaurus.group.unique(),
-    value='h_lines',
-    description='Data set 2: ',
-    disabled=False,
-)
+
+def plot_feature_importance(df):
+    # Create a plot for feature importance
+    fig, ax = plt.subplots(figsize=(8, 6))
+    ax.set_xlabel("Importance Score", fontsize=FONT_SIZE_AXES)
+    ax.set_ylabel("Feature", fontsize=FONT_SIZE_AXES)
+    ax.set_title("Feature Importance", fontsize=FONT_SIZE_TITLE)
+    ax.tick_params(labelsize=FONT_SIZE_TICKS)
+
+    sns.barplot(data=df, orient="h", ax=ax, color="deepskyblue")
+
+    plt.show()
+
     
-    statistics_graph_2 = widgets.Button(
-    value=False,
-    description='Compute stats',
-    disabled=False,
-    button_style='',
-    tooltip='Description',
-    icon='' 
-)
-    plotted_stats_graph_1 = None
-    plotted_stats_graph_2 = None
+def plot_happiness(variable, x1, y1, x2, y2):
+    """Plots a predictor variable on x-axis and happiness (life ladder) on y axis.
 
-    fig = plt.figure(figsize = (8,4), tight_layout = True)
-    gs = gridspec.GridSpec(2,2)
-    ax_1 = fig.add_subplot(gs[0,0])
-    ax_2 = fig.add_subplot(gs[1,0])
-    ax_text_1 = fig.add_subplot(gs[0,1])
-    ax_text_2 = fig.add_subplot(gs[1,1])
-    df_group_1 = df_datasaurus.groupby('group').get_group('dino')
-    df_group_2 = df_datasaurus.groupby('group').get_group('h_lines')
-    sc_1 = ax_1.scatter(df_group_1['x'],df_group_1['y'], s = 4)
-    sc_2 = ax_2.scatter(df_group_2['x'],df_group_2['y'], s = 4)
-    ax_1.set_xlabel('x')
-    ax_1.set_ylabel('y')
-    ax_2.set_xlabel('x')
-    ax_2.set_ylabel('y')
-    ax_text_1.axis('off')
-    ax_text_2.axis('off')
+    Args:
+        variable: The name of the x axis variable
+        x1, y1: The x, y original data to be plotted. Both can be None if not available.
+        x2, y2: The x, y data model to be plotted. Both can be None if not available.
+    """
+    # Create the plot
+    fig, ax = plt.subplots(figsize=(8, 6))
+    # Plot the original data
+    ax.scatter(
+        x1, y1, color="blue", edgecolors="white", s=15, label="Training Data"
+    )
+    # Plot the model
+    ax.scatter(
+        x2, y2,
+        color="orange", edgecolors="black", s=15, marker="D", label="Predictions on the Test Set"
+    )
     
-    def dropdown_choice(value, plotted_stats, ax_text, sc):
-        if value.new != plotted_stats:
-            ax_text.clear()
-            ax_text.axis('off')
-        sc.set_offsets(df_datasaurus.groupby('group').get_group(value.new)[['x', 'y']])
-        fig.canvas.draw_idle()
-    
-        
-    def get_stats(value, plotted_stats, ax_text, dropdown, val):
-        value = dropdown.value
-        if value == plotted_stats:
-            return
-        ax_text.clear()
-        ax_text.axis('off')
-        df_group = df_datasaurus.groupby('group').get_group(value)[['x','y']]
-        means = df_group.mean()
-        var = df_group.var()
-        corr = df_group.corr()
-        ax_text.text(0,
-                    0,
-                    f"Statistics:\n      Mean x:      {means['x']:.2f}\n      Variance x: {var['x']:.2f}\n\n      Mean y:      {means['y']:.2f}\n      Variance y: {var['y']:.2f}\n\n      Correlation:  {corr['x']['y']:.2f}"
-                    )
-        if val == 1:
-            plotted_stats_graph_1 = value
-        if val == 2:
-            plotted_stats_graph_2 = value
-        
-        
-        
-
-    dropdown_graph_1.observe(lambda value: dropdown_choice(value,plotted_stats_graph_1, ax_text_1, sc_1), names = 'value')
-    statistics_graph_1.on_click(lambda value: get_stats(value, plotted_stats_graph_1, ax_text_1, dropdown_graph_1,1))
-    dropdown_graph_2.observe(lambda value: dropdown_choice(value,plotted_stats_graph_2, ax_text_2, sc_2), names = 'value')
-    statistics_graph_2.on_click(lambda value: get_stats(value, plotted_stats_graph_2, ax_text_2, dropdown_graph_2,2))    
-    graph_1_box = HBox([dropdown_graph_1, statistics_graph_1])
-    graph_2_box = HBox([dropdown_graph_2, statistics_graph_2])
-    display(VBox([graph_1_box,graph_2_box]))
-    
-
-def plot_datasaurus():
-
-    fig, axs = plt.subplots(6,2, figsize = (7,9), tight_layout = True)
-    i = 0
-    fig.suptitle("Datasaurus", fontsize = 16)
-    for line in axs:
-        for ax in line:
-            if i > 12:
-                ax.axis('off')
-            else:
-                group = df_datasaurus.group.unique()[i]
-                ax.scatter(df_datasaurus[df_datasaurus.group == group]['x'],df_datasaurus[df_datasaurus.group == group]['y'], s = 4)
-                ax.set_title(f'Group {group}')
-                ax.set_ylim(-5,110)
-                ax.set_xlim(10,110)
-                ax.set_xlabel('x')
-                ax.set_ylabel('y')
-                i+=1
-
+    variable_title = " ".join(variable.split("_")).title()
+    ax.set_xlabel(f"{variable_title}", fontsize=FONT_SIZE_AXES)
+    ax.set_ylabel("Life Lsadder (1-10)", fontsize=FONT_SIZE_AXES)
+    ax.set_title(f"Happiness vs. {variable_title}", fontsize=FONT_SIZE_TITLE)
+    ax.tick_params(labelsize=FONT_SIZE_TICKS)
+    ax.legend(fontsize=FONT_SIZE_TICKS)
