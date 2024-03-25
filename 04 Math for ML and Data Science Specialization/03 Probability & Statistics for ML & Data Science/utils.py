@@ -1,320 +1,137 @@
 import numpy as np
+import pandas as pd
+import os
 import matplotlib.pyplot as plt
-import seaborn as sns
+from IPython.display import display
 import ipywidgets as widgets
-from ipywidgets import interact_manual
+from ipywidgets import interact,HBox, VBox
+import matplotlib.gridspec as gridspec
 
+df_anscombe = pd.read_csv('df_anscombe.csv')
+df_datasaurus = pd.read_csv("datasaurus.csv")
 
-
-class monty_hall_game:
-    def __init__(self) -> None:
-        fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(10, 4))
-        self.fig = fig
-        self.ax = ax1
-        self.results_ax = ax2
-        self.memory_wins = {"switch": 0, "stay": 0}
-        self.memory_games = {"switch": 0, "stay": 0}
-        self.games_finished = 0
-        self.start()
-
-        self.cpoint = self.fig.canvas.mpl_connect("button_press_event", self.click_plot)
-
-    def start(self) -> None:
-
-        self.ax.clear()
-        values = [10, 10, 10]
-        door_numbers = ["Door 1", "Door 2", "Door 3"]
-
-        self.ax.spines["top"].set_color("none")
-        self.ax.spines["right"].set_color("none")
-        self.ax.spines["left"].set_color("none")
-        self.ax.get_yaxis().set_visible(False)
-
-        self.ax.bar(
-            door_numbers,
-            values,
-            color=["brown", "brown", "brown"],
-            width=0.6,
-            edgecolor=["black", "black", "black"],
-        )
-        self.ax.set_title(f"New game started, pick any door.")
-
-        self.prize_coordinates = [-0.15, 0.85, 1.85]
-
-        self.doors, self.winner_index = self.init_monty_hall()
-        self.prizes = list(map(lambda x: "GOAT" if x == 0 else "CAR", list(self.doors)))
-
-        self.choice = None
-        self.switch = None
-        self.temptative_final_door = None
-        self.final_choice = None
-        self.first_pick = True
-        self.game_over = False
-        self.won = None
-        self.ilegal_move = False
-
-    def click_plot(self, event):
+def plot_anscombes_quartet():
+    fig, axs = plt.subplots(2,2, figsize = (8,5), tight_layout = True)
+    i = 1
+    fig.suptitle("Anscombe's quartet", fontsize = 16)
+    for line in axs:
+        for ax in line:
+            ax.scatter(df_anscombe[df_anscombe.group == i]['x'],df_anscombe[df_anscombe.group == i]['y'])
+            ax.set_title(f'Group {i}')
+            ax.set_ylim(2,15)
+            ax.set_xlim(0,21)
+            ax.set_xlabel('x')
+            ax.set_ylabel('y')
+            i+=1
         
-        if event.inaxes in [self.ax]:
-            if self.game_over:
-                self.start()
-                return
+def display_widget():
 
-            # if self.choice and self.final_choice:
-            #     self.start()
+    dropdown_graph_1 = widgets.Dropdown(
+    options=df_datasaurus.group.unique(),
+    value='dino',
+    description='Data set 1: ',
+    disabled=False,
+)
+    
+    statistics_graph_1 = widgets.Button(
+    value=False,
+    description='Compute stats',
+    disabled=False,
+    button_style='',
+    tooltip='Description',
+    icon='' 
+)
 
-            if self.first_pick:
-                self.first_pick_mtd(event.xdata)
+    dropdown_graph_2 = widgets.Dropdown(
+    options=df_datasaurus.group.unique(),
+    value='h_lines',
+    description='Data set 2: ',
+    disabled=False,
+)
+    
+    statistics_graph_2 = widgets.Button(
+    value=False,
+    description='Compute stats',
+    disabled=False,
+    button_style='',
+    tooltip='Description',
+    icon='' 
+)
+    plotted_stats_graph_1 = None
+    plotted_stats_graph_2 = None
+
+    fig = plt.figure(figsize = (8,4), tight_layout = True)
+    gs = gridspec.GridSpec(2,2)
+    ax_1 = fig.add_subplot(gs[0,0])
+    ax_2 = fig.add_subplot(gs[1,0])
+    ax_text_1 = fig.add_subplot(gs[0,1])
+    ax_text_2 = fig.add_subplot(gs[1,1])
+    df_group_1 = df_datasaurus.groupby('group').get_group('dino')
+    df_group_2 = df_datasaurus.groupby('group').get_group('h_lines')
+    sc_1 = ax_1.scatter(df_group_1['x'],df_group_1['y'], s = 4)
+    sc_2 = ax_2.scatter(df_group_2['x'],df_group_2['y'], s = 4)
+    ax_1.set_xlabel('x')
+    ax_1.set_ylabel('y')
+    ax_2.set_xlabel('x')
+    ax_2.set_ylabel('y')
+    ax_text_1.axis('off')
+    ax_text_2.axis('off')
+    
+    def dropdown_choice(value, plotted_stats, ax_text, sc):
+        if value.new != plotted_stats:
+            ax_text.clear()
+            ax_text.axis('off')
+        sc.set_offsets(df_datasaurus.groupby('group').get_group(value.new)[['x', 'y']])
+        fig.canvas.draw_idle()
+    
+        
+    def get_stats(value, plotted_stats, ax_text, dropdown, val):
+        value = dropdown.value
+        if value == plotted_stats:
+            return
+        ax_text.clear()
+        ax_text.axis('off')
+        df_group = df_datasaurus.groupby('group').get_group(value)[['x','y']]
+        means = df_group.mean()
+        var = df_group.var()
+        corr = df_group.corr()
+        ax_text.text(0,
+                    0,
+                    f"Statistics:\n      Mean x:      {means['x']:.2f}\n      Variance x: {var['x']:.2f}\n\n      Mean y:      {means['y']:.2f}\n      Variance y: {var['y']:.2f}\n\n      Correlation:  {corr['x']['y']:.2f}"
+                    )
+        if val == 1:
+            plotted_stats_graph_1 = value
+        if val == 2:
+            plotted_stats_graph_2 = value
+        
+        
+        
+
+    dropdown_graph_1.observe(lambda value: dropdown_choice(value,plotted_stats_graph_1, ax_text_1, sc_1), names = 'value')
+    statistics_graph_1.on_click(lambda value: get_stats(value, plotted_stats_graph_1, ax_text_1, dropdown_graph_1,1))
+    dropdown_graph_2.observe(lambda value: dropdown_choice(value,plotted_stats_graph_2, ax_text_2, sc_2), names = 'value')
+    statistics_graph_2.on_click(lambda value: get_stats(value, plotted_stats_graph_2, ax_text_2, dropdown_graph_2,2))    
+    graph_1_box = HBox([dropdown_graph_1, statistics_graph_1])
+    graph_2_box = HBox([dropdown_graph_2, statistics_graph_2])
+    display(VBox([graph_1_box,graph_2_box]))
+    
+
+def plot_datasaurus():
+
+    fig, axs = plt.subplots(6,2, figsize = (7,9), tight_layout = True)
+    i = 0
+    fig.suptitle("Datasaurus", fontsize = 16)
+    for line in axs:
+        for ax in line:
+            if i > 12:
+                ax.axis('off')
             else:
-                self.second_pick_mtd(event.xdata)
+                group = df_datasaurus.group.unique()[i]
+                ax.scatter(df_datasaurus[df_datasaurus.group == group]['x'],df_datasaurus[df_datasaurus.group == group]['y'], s = 4)
+                ax.set_title(f'Group {group}')
+                ax.set_ylim(-5,110)
+                ax.set_xlim(10,110)
+                ax.set_xlabel('x')
+                ax.set_ylabel('y')
+                i+=1
 
-            if ((self.choice is not None) or (self.final_choice is not None)) and (
-                not self.ilegal_move
-            ):
-                self.update_bar_chart()
-
-    def first_pick_mtd(self, x_coord):
-
-        if (x_coord >= -0.3) and (x_coord <= 0.3):
-            self.choice = 0
-        elif (x_coord >= 0.7) and (x_coord <= 1.3):
-            self.choice = 1
-        elif (x_coord >= 1.7) and (x_coord <= 2.3):
-            self.choice = 2
-        else:
-            self.choice = None
-#             print("click a door")
-            # self.ax.set_title(f"Click on a door to move forward")
-            self.start()
-
-    def second_pick_mtd(self, x_coord):
-
-        if (x_coord >= -0.3) and (x_coord <= 0.3):
-            self.final_choice = 0
-        elif (x_coord >= 0.7) and (x_coord <= 1.3):
-            self.final_choice = 1
-        elif (x_coord >= 1.7) and (x_coord <= 2.3):
-            self.final_choice = 2
-        else:
-            self.final_choice = None
-#             print("click a door")
-            # self.ax.set_title(f"Click on a door to move forward")
-            self.start()
-
-        if self.final_choice == self.opened_door:
-            self.ax.set_title(
-                f"You selected the opened door.\nThis game doesn't count"
-            )
-            self.ilegal_move = True
-            self.game_over = True
-
-    def update_bar_chart(self):
-
-        if self.first_pick:
-            values = [10, 10, 10]
-            colors = ["brown", "brown", "brown"]
-            edge_colors = ["black", "black", "black"]
-            linewidths = [1, 1, 1]
-            # colors[self.choice] = "red"
-            edge_colors[self.choice] = "red"
-            linewidths[self.choice] = 5
-
-            door_numbers = ["Door 1", "Door 2", "Door 3"]
-            self.opened_door = self.open_door()
-            # values[opened_door] = 0
-
-            colors[self.opened_door] = "gray"
-
-            self.ax.clear()
-            self.ax.text(
-                self.prize_coordinates[self.opened_door],
-                5,
-                f"{self.prizes[self.opened_door]}",
-            )
-
-            # self.ax.text(0,10,f"You chose door {self.choice} and host opened door {opened_door}")
-            # self.ax.text(0.4,5,f"{self.doors}")
-            # self.results_ax.bar(door_numbers, values, color = colors,width = 0.6, edgecolor = ['black', 'black', 'black'])
-
-            self.ax.bar(
-                door_numbers,
-                values,
-                color=colors,
-                width=0.6,
-                edgecolor=edge_colors,
-                linewidth=linewidths,
-            )
-            self.ax.set_title(
-                f"You chose door {self.choice+1} and host opened door {self.opened_door+1}.\nDecide your final door."
-            )
-            self.first_pick = False
-        else:
-            values = [10, 10, 10]
-            colors = ["gray", "gray", "gray"]
-            colors[self.winner_index] = "green"
-            edge_colors = ["black", "black", "black"]
-            edge_colors[self.final_choice] = "red"
-            linewidths = [1, 1, 1]
-            linewidths[self.final_choice] = 5
-            door_numbers = ["Door 1", "Door 2", "Door 3"]
-            self.ax.clear()
-            for i in range(3):
-                self.ax.text(self.prize_coordinates[i], 5, f"{self.prizes[i]}")
-            self.ax.bar(
-                door_numbers,
-                values,
-                color=colors,
-                width=0.6,
-                edgecolor=edge_colors,
-                linewidth=linewidths,
-            )
-            self.game_over = True
-            self.check_if_switch()
-            msg = " " if self.switch else " NOT "
-            self.ax.set_title(
-                f"You decided{msg}to switch and chose door #{self.final_choice+1}\n You got a {self.prizes[self.final_choice]}"
-            )
-
-            self.games_finished += 1
-            if self.switch:
-                self.memory_wins["switch"] += self.doors[self.final_choice]
-                self.memory_games["switch"] += 1
-            else:
-                self.memory_wins["stay"] += self.doors[self.final_choice]
-                self.memory_games["stay"] += 1
-
-            self.update_results_chart()
-
-    def update_results_chart(self):
-        self.results_ax.clear()
-        self.results_ax.set_title(
-            f"Games finished: {self.games_finished}\nGames you switched: {self.memory_games['switch']}, Games you stayed: {self.memory_games['stay']}"
-        )
-        self.results_ax.scatter(
-            ["switch", "stay"],
-            [
-                self.memory_wins["switch"] / self.memory_games['switch'],
-                self.memory_wins["stay"] / self.memory_games['stay'],
-            ],
-            s=350,
-        )
-        self.results_ax.set_ylim(0, 1)
-
-    def check_if_switch(self):
-        self.switch = False if self.choice == self.final_choice else True
-
-    def init_monty_hall(self):
-        doors = np.array([0, 0, 0])
-        winner_index = np.random.randint(0, 3)
-        doors[winner_index] = 1
-
-        return doors, winner_index
-
-    def open_door(self):
-        openable_doors = [
-            i for i in range(3) if i not in (self.winner_index, self.choice)
-        ]
-        door_to_open = np.random.choice(openable_doors)
-
-        return door_to_open
-
-    
-
-
-def success_rate_plot(f):
-    def _plot(switch, n_iterations):
-        wins = 0
-        # iterations = 1000
-
-        for _ in range(n_iterations):
-                wins += f(switch=switch)
-
-        win_rate = wins / n_iterations
-        loss_rate = 1 - win_rate
-
-        fig, ax = plt.subplots(1, 1, figsize=(10, 4))
-        ax.pie(
-            [win_rate, loss_rate],
-            labels=["Win a car", "Win... a goat?"],
-            colors=sns.color_palette("pastel")[2:],
-            autopct="%.0f%%",
-        )
-
-        msg = "always" if switch else "never"
-        ax.set_title(f"Win rate if you {msg} switch doors ({n_iterations} simulations)")
-        plt.show()
-        
-    def _plot_generalized(switch, n_iterations, n = 3, k = 1):
-        wins = 0
-        # iterations = 1000
-
-        for _ in range(n_iterations):
-            try:
-                wins += f(switch=switch, n = n, k = k)
-            except ValueError:
-                print("n is the number of doors and k is the amount of doors the host opens. Since you have already picked one door, k has to be at most n-2, so there is at least one openable door after the host open the k doors.")
-                return
-
-        win_rate = wins / n_iterations
-        loss_rate = 1 - win_rate
-
-        fig, ax = plt.subplots(1, 1, figsize=(12, 4))
-        ax.pie(
-            [win_rate, loss_rate],
-            labels=["Win a car", "Win... a goat?"],
-            colors=sns.color_palette("pastel")[2:],
-            autopct="%.0f%%",
-        )
-
-        msg = "always" if switch else "never"
-        ax.set_title(f"Win rate if you {msg} switch doors ({n_iterations} simulations)")
-        plt.show()
-
-
-    n_iterations_selection = widgets.SelectionSlider(
-        options=[1, 10, 100, 1000],
-        value=1,
-        description="# iterations",
-        disabled=False,
-        continuous_update=False,
-        orientation="horizontal",
-        readout=True,
-    )
-
-    strategy_selection = widgets.RadioButtons(
-        options=[True, False],
-        value=False,
-        description="Switch Doors?",
-        disabled=False,
-    )
-    
-    if f.__qualname__ == 'monty_hall':
-        
-        interact_manual(
-        _plot, switch=strategy_selection, n_iterations=n_iterations_selection,
-    )
-        
-    
-        
-    if f.__qualname__ == 'generalized_monty_hall':
-        
-        disabled = False
-
-        n_selection = widgets.SelectionSlider(
-        options=range(3,101),
-        value=3,
-        description="n",
-        disabled=disabled,
-    )
-        
-        
-        k_selection = widgets.SelectionSlider(
-        options=range(0,99),
-        value=1,
-        description="k",
-        disabled=disabled,
-    )
-        
-        interact_manual(
-        _plot_generalized, switch=strategy_selection, n_iterations=n_iterations_selection, n = n_selection, k = k_selection
-    )
