@@ -21,9 +21,9 @@ git commit -m "Update"
 git push origin HEAD:main 
 ```
 
-> EZ Push Large Files (More than 100mb)  
-Just change the large file extention.   
-For this case, my large file is `.csv`
+> EZ Push Large Files (More than 100mb)
+
+Just change the large file name or extention. For this case, my large file is `.csv`     
 ```bash
 git lfs install 
 git lfs track "*.csv"
